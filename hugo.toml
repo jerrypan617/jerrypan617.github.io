@@ -6,6 +6,7 @@ publishDir = "docs"
 
 [params]
   math = true
+  custom_css = ["/css/custom.css"]
   # 自定义标题和描述
   homeInfoParams.Title = "JerryLogs"
   homeInfoParams.Content = "Share my view."

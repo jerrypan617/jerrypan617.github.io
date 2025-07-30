@@ -56,7 +56,28 @@
         }
 
     </style>
-</noscript><meta property="og:url" content="https://jerrypan617.github.io/posts/">
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css" integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js" integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+<meta property="og:url" content="https://jerrypan617.github.io/posts/">
   <meta property="og:site_name" content="JerryLogs">
   <meta property="og:title" content="Posts">
   <meta property="og:locale" content="en-us">
@@ -146,6 +167,20 @@
     Posts
   </h1>
 </header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Scaled Dot-Product Attention
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>The Self Attention Mechanism (SA) is a fundamental part of the Transformer model, which is universally applied in large language models. Below is my view of how SA works, and why it works.
+The basic structure of SA is shown above. Given a embedded input vector $X$, we apply $3$ learnable linear layers: $W_Q, W_K$ and $W_V$, to generate three new output vectors: Query, Key and Value. This process can be represented as:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-07-30 15:20:50 +0800 CST'>July 30, 2025</span></footer>
+  <a class="entry-link" aria-label="post link to Scaled Dot-Product Attention" href="https://jerrypan617.github.io/posts/my-new-post/"></a>
+</article>
 
 <article class="post-entry"> 
   <header class="entry-header">

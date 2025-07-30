@@ -6,8 +6,17 @@
     <description>Recent content in Posts on JerryLogs</description>
     <generator>Hugo -- 0.148.2</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Jul 2025 11:44:07 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 30 Jul 2025 15:20:50 +0800</lastBuildDate>
     <atom:link href="https://jerrypan617.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Scaled Dot-Product Attention</title>
+      <link>https://jerrypan617.github.io/posts/my-new-post/</link>
+      <pubDate>Wed, 30 Jul 2025 15:20:50 +0800</pubDate>
+      <guid>https://jerrypan617.github.io/posts/my-new-post/</guid>
+      <description>&lt;p&gt;The Self Attention Mechanism (SA) is a fundamental part of the Transformer model, which is universally applied in large language models. Below is my view of how SA works, and why it works.&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;Self attention mechanism&#34; loading=&#34;lazy&#34; src=&#34;https://jerrypan617.github.io/images/self_attention.png&#34; title=&#34;Self attention mechanism&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The basic structure of SA is shown above. Given a embedded input vector $X$, we apply $3$ learnable linear layers: $W_Q, W_K$ and $W_V$, to generate three new output vectors: Query, Key and Value. This process can be represented as:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Test blog</title>
       <link>https://jerrypan617.github.io/posts/my-first-post/</link>

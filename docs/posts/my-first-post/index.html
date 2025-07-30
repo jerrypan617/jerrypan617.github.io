@@ -56,7 +56,28 @@ This is a test blog.">
         }
 
     </style>
-</noscript><meta property="og:url" content="https://jerrypan617.github.io/posts/my-first-post/">
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css" integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js" integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+<meta property="og:url" content="https://jerrypan617.github.io/posts/my-first-post/">
   <meta property="og:site_name" content="JerryLogs">
   <meta property="og:title" content="Test blog">
   <meta property="og:description" content="Welcome to JerryLog This is a test blog.">
@@ -201,6 +222,13 @@ This is a test blog.">
   <footer class="post-footer">
     <ul class="post-tags">
     </ul>
+<nav class="paginav">
+  <a class="prev" href="https://jerrypan617.github.io/posts/my-new-post/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Scaled Dot-Product Attention</span>
+  </a>
+</nav>
 
   </footer>
 </article>
