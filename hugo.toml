@@ -34,6 +34,9 @@ publishDir = "docs"
   subtitle = "This is Jerry. This blog is used to document my learning notes."
   imageUrl = "/images/profile.jpg"
 
+[params.assets]
+  favicon = "/assets/favicon.ico"
+
 [[menu.main]]
   identifier = "home"
   name = "Homepage"

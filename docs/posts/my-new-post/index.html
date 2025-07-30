@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Scaled Dot-Product Attention | JerryLogs</title>
 <meta name="keywords" content="">
 <meta name="description" content="The Self Attention Mechanism (SA) is a fundamental part of the Transformer model, which is universally applied in large language models. Below is my view of how SA works, and why it works.
 
 The basic structure of SA is shown above. Given a embedded input vector $X$, we apply $3$ learnable linear layers: $W_Q, W_K$ and $W_V$, to generate three new output vectors: Query, Key and Value. This process can be represented as:">
 <meta name="author" content="">
-<link rel="canonical" href="https://jerrypan617.github.io/posts/my-new-post/">
+<link rel="canonical" href="http://localhost:1313/posts/my-new-post/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css" integrity="sha256-j&#43;ECM6cGvIfy4Is8&#43;XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://jerrypan617.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://jerrypan617.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://jerrypan617.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://jerrypan617.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://jerrypan617.github.io/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/assets/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://jerrypan617.github.io/posts/my-new-post/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/my-new-post/">
 <noscript>
     <style>
         #theme-toggle,
@@ -78,72 +78,7 @@ The basic structure of SA is shown above. Given a embedded input vector $X$, we 
     });
 </script>
 
-<meta property="og:url" content="https://jerrypan617.github.io/posts/my-new-post/">
-  <meta property="og:site_name" content="JerryLogs">
-  <meta property="og:title" content="Scaled Dot-Product Attention">
-  <meta property="og:description" content="The Self Attention Mechanism (SA) is a fundamental part of the Transformer model, which is universally applied in large language models. Below is my view of how SA works, and why it works.
-The basic structure of SA is shown above. Given a embedded input vector $X$, we apply $3$ learnable linear layers: $W_Q, W_K$ and $W_V$, to generate three new output vectors: Query, Key and Value. This process can be represented as:">
-  <meta property="og:locale" content="en-us">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-07-30T15:20:50+08:00">
-    <meta property="article:modified_time" content="2025-07-30T15:20:50+08:00">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Scaled Dot-Product Attention">
-<meta name="twitter:description" content="The Self Attention Mechanism (SA) is a fundamental part of the Transformer model, which is universally applied in large language models. Below is my view of how SA works, and why it works.
 
-The basic structure of SA is shown above. Given a embedded input vector $X$, we apply $3$ learnable linear layers: $W_Q, W_K$ and $W_V$, to generate three new output vectors: Query, Key and Value. This process can be represented as:">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://jerrypan617.github.io/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Scaled Dot-Product Attention",
-      "item": "https://jerrypan617.github.io/posts/my-new-post/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Scaled Dot-Product Attention",
-  "name": "Scaled Dot-Product Attention",
-  "description": "The Self Attention Mechanism (SA) is a fundamental part of the Transformer model, which is universally applied in large language models. Below is my view of how SA works, and why it works.\nThe basic structure of SA is shown above. Given a embedded input vector $X$, we apply $3$ learnable linear layers: $W_Q, W_K$ and $W_V$, to generate three new output vectors: Query, Key and Value. This process can be represented as:\n",
-  "keywords": [
-    
-  ],
-  "articleBody": "The Self Attention Mechanism (SA) is a fundamental part of the Transformer model, which is universally applied in large language models. Below is my view of how SA works, and why it works.\nThe basic structure of SA is shown above. Given a embedded input vector $X$, we apply $3$ learnable linear layers: $W_Q, W_K$ and $W_V$, to generate three new output vectors: Query, Key and Value. This process can be represented as:\n$$ Query=XW_Q^T, Key=XW_K^T, Value=XW_V^T $$\nThen, calculate the attention weight through this function:\n$$ \\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{Q K^T}{\\sqrt{d_k}}\\right) \\ V $$\nwhere $Q, K, V$ denotes the Query, Key and Value vector, $K^T$ represents the transposed Key vector. $d_k$ is the dimension of the $Q$ and $K$. Every row of $Q$ and $K$ is the semantic feature representation of each input token, so the result of $QK^T$ is the similarity matrix of all the tokens in the input. For example: \"I love tennis, it is my favorite sport.\" In this sentence’s similarity matrix, the value of $(“tennis”, “it”)$ will be high because they have strong semantic relavance.\nAfter obtaining the similarity matrix, we need to scale it. Assume that each component of $Q$ and $K$ is an independent and identically distributed random variable with mean 0 and variance $1$. For vectors of dimension $d_k$, the expected value of the dot product is still $0$, but its variance increases as the dimension increases:\n$$ \\text{Var}(Q \\cdot K) = \\text{Var}\\left(\\sum_{i=1}^{d_k} Q_i K_i\\right) = \\sum_{i=1}^{d_k} \\text{Var}(Q_i K_i) = \\sum_{i=1}^{d_k} \\text{Var}(Q_i) \\text{Var}(K_i) = d_k $$\nThe standard deviation of the dot product is $\\sqrt{d_k}$, which means that the value of the dot product can become very large, especially in high dimensions. Therefore, The variance of the dot product is normalized by dividing by $\\sqrt{d_k}$. The standard deviation of the scaled dot product is close to $1$, and the distribution of dot product values is more stable and falls within a reasonable range.\nThen, we need to utilize the Softmax function to convert the dot product attention score into probability distribution to determine the contribution weight of each key to the final output:\n$$ \\text{softmax}(x_i) = \\frac{e^{x_i}}{\\sum_j e^{x_j}} $$\nIn self-attention, the input $x$ is a scaled dot product score matrix (of shape $[n, n]$, where $n$ is the sequence length), and Softmax is typically applied along the last dimension (i.e., the scores of all keys corresponding to each query) to produce a probability matrix.\nFrom the function we can also see that the Softmax function is very sensitive to the absolute size of the input value. If the dot product value is too large (for example, far exceeding $1$), the output of Softmax will tend to be “hard-selected”, causing the attention weights to be concentrated in a few positions, reducing the model’s attention to diverse contexts. Excessively large dot product values can also cause the gradient vanishing during Softmax backpropagation, because the derivative of Softmax for large input values is close to $0$.\nWhen I was first learning Self Attention mechanism, I was confused about why there is a $V$ matrix here, because the semantic similarity have already been calculated. However, the value vector $V$ is introduced to separate the roles of keys and values:\n$K$: Used to calculate similarity with the query and determine which locations are more relevant. $V$: Provide actual feature information for weighted combination. Benefits of this separation: Keys and values can represent different information. For example, the key can capture the contextual relevance of a location, while the value can retain richer semantic information. This separation increases the flexibility of the model, enabling it to learn different attention patterns and representations.\nReferences [1] Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … \u0026 Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.\n",
-  "wordCount" : "639",
-  "inLanguage": "en",
-  "datePublished": "2025-07-30T15:20:50+08:00",
-  "dateModified": "2025-07-30T15:20:50+08:00",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://jerrypan617.github.io/posts/my-new-post/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "JerryLogs",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://jerrypan617.github.io/favicon.ico"
-    }
-  }
-}
-</script>
 <link rel="stylesheet" href="/css/katex.min.css">
 <script defer src="/js/katex.min.js"></script>
 <script defer src="/js/auto-render.min.js"></script>
@@ -177,7 +112,7 @@ The basic structure of SA is shown above. Given a embedded input vector $X$, we 
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://jerrypan617.github.io/" accesskey="h" title="JerryLogs (Alt + H)">JerryLogs</a>
+            <a href="http://localhost:1313/" accesskey="h" title="JerryLogs (Alt + H)">JerryLogs</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -203,17 +138,17 @@ The basic structure of SA is shown above. Given a embedded input vector $X$, we 
         </div>
         <ul id="menu">
             <li>
-                <a href="https://jerrypan617.github.io/" title="Homepage">
+                <a href="http://localhost:1313/" title="Homepage">
                     <span>Homepage</span>
                 </a>
             </li>
             <li>
-                <a href="https://jerrypan617.github.io/about/" title="About">
+                <a href="http://localhost:1313/about/" title="About">
                     <span>About</span>
                 </a>
             </li>
             <li>
-                <a href="https://jerrypan617.github.io/posts/" title="Blogs">
+                <a href="http://localhost:1313/posts/" title="Blogs">
                     <span>Blogs</span>
                 </a>
             </li>
@@ -276,7 +211,7 @@ Benefits of this separation:</li>
     <ul class="post-tags">
     </ul>
 <nav class="paginav">
-  <a class="next" href="https://jerrypan617.github.io/posts/my-first-post/">
+  <a class="next" href="http://localhost:1313/posts/my-first-post/">
     <span class="title">Next »</span>
     <br>
     <span>Test blog</span>
@@ -288,7 +223,7 @@ Benefits of this separation:</li>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="https://jerrypan617.github.io/">JerryLogs</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">JerryLogs</a></span> · 
 
     <span>
         Powered by
