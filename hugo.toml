@@ -1,13 +1,50 @@
 baseURL = "https://jerrypan617.github.io/"
 languageCode = 'en-us'
 title = 'JerryLogs'
-theme = "ananke"
+theme = "PaperMod"
 publishDir = "docs"
+
+[params]
+  math = true
+  # 自定义标题和描述
+  homeInfoParams.Title = "JerryLogs"
+  homeInfoParams.Content = "Share my view."
+  
+  # 启用暗色模式
+  defaultTheme = "auto"  # auto, light, dark
+  disableThemeToggle = false
+
+  # 自定义颜色
+  accentColor = "#1e90ff"  # 主色调
+  secondaryColor = "#f0f0f0"  # 辅助色
+
+  # 社交图标
+  socialIcons = [
+    { name = "github", url = "https://github.com/jerrypan617" },
+    { name = "email", url = "2022217940@mail.hfut.edu.cn" }
+  ]
+  mainSections = ["posts"]
+  ShowPostNavLinks = true
+  ShowCodeCopyButtons = true 
+
+[params.profileMode]
+  enabled = true
+  title = "Jerry Pan"
+  subtitle = "This is Jerry. This blog is used to document my learning notes."
+  imageUrl = "/images/profile.jpg"
+
 [[menu.main]]
-  name = "Home"
+  identifier = "home"
+  name = "Homepage"
   url = "/"
   weight = 1
 [[menu.main]]
+  identifier = "about"
   name = "About"
   url = "/about/"
   weight = 2
+[[menu.main]]
+  identifier = "posts"
+  name = "Blogs"
+  url = "/posts/"
+  weight = 3
