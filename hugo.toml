@@ -1,0 +1,4 @@
+baseURL = "https://jerrypan617.github.io/"
+languageCode = 'en-us'
+title = 'JerryLogs'
+theme = "ananke"
