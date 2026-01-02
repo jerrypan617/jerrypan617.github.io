@@ -94,6 +94,14 @@ const siteConfig = {
             description: "A fine-tuned BLIP-VQA model for medical pathology image question answering with open-ended text generation.",
             technologies: ["Python", "Transformers","Peft", "PyTorch"],
             github: "https://github.com/jerrypan617/Medical-VQA-BLIP",
+        },
+        {
+            type: "PROJECT",
+            name: "Simple RAG",
+            subtitle: "Two-phase RAG system for LLM reasoning.",
+            description: "A 2-phase (Retrieve + Rerank) RAG system implementation.",
+            technologies: ["Python", "Sentence_Transformers", "PyTorch", "faiss-cpu"],
+            github: "https://github.com/jerrypan617/Simple-RAG",
         }
     ],
 
