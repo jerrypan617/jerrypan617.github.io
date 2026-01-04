@@ -17,7 +17,7 @@ function renderHeader() {
                 ${personal.bootMessage} <span class="animate-blink">_</span>
             </div>
             
-            <h1 class="text-5xl md:text-7xl font-bold text-neon-cyan tracking-tighter text-glow glitch-hover cursor-default uppercase">
+            <h1 class="text-5xl md:text-7xl font-bold text-neon-cyan tracking-tighter text-glow glitch-hover cursor-pointer uppercase" onclick="window.location.href='index.html'">
                 ${personal.name}
             </h1>
             
