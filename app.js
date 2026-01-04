@@ -37,12 +37,19 @@ function renderHeader() {
                 </div>
             </div>
 
-            ${(personal.social && (personal.social.x || personal.social.huggingface || personal.social.reddit)) ? `
+            ${(personal.social && (personal.social.x || personal.social.huggingface || personal.social.reddit)) || true ? `
                 <div class="mt-4 pt-4 border-t border-gray-700">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="text-neon-pink text-xs font-bold">[SOCIAL_NETWORKS]</span>
                     </div>
                     <div class="flex flex-wrap gap-3">
+                        <a href="blog.html" 
+                           class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-neon-lime transition-colors border border-gray-700 hover:border-neon-lime px-3 py-1.5 hover:bg-neon-lime hover:bg-opacity-10 group">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                            <span class="group-hover:underline">Blog</span>
+                        </a>
                         ${personal.social.x ? `
                             <a href="${personal.social.x}" target="_blank" rel="noopener noreferrer" 
                                class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-neon-cyan transition-colors border border-gray-700 hover:border-neon-cyan px-3 py-1.5 hover:bg-neon-cyan hover:bg-opacity-10 group">
@@ -274,11 +281,23 @@ function renderFooter() {
 
 // 初始化：页面加载完成后渲染所有内容
 document.addEventListener('DOMContentLoaded', function() {
+    // 渲染所有可能存在的组件
     renderHeader();
-    renderProfile();
-    renderSkills();
-    renderProjects();
-    renderAchievements();
+    
+    // 只在存在对应元素时渲染
+    if (document.getElementById('profile')) {
+        renderProfile();
+    }
+    if (document.getElementById('skills')) {
+        renderSkills();
+    }
+    if (document.getElementById('projects')) {
+        renderProjects();
+    }
+    if (document.getElementById('achievements')) {
+        renderAchievements();
+    }
+    
     renderFooter();
 });
 
