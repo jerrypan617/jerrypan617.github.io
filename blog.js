@@ -328,6 +328,17 @@ style.textContent = `
         color: #ccff00;
     }
     
+    /* Image styles */
+    .blog-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1.5rem auto;
+        border: 2px solid #333;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+    }
+    
     .blog-content ul,
     .blog-content ol {
         margin-bottom: 1rem;
