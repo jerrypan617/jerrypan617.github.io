@@ -208,7 +208,7 @@ async function openBlog(blogId) {
     
     modal.innerHTML = `
         <div class="bg-[#141414] border-0 sm:border border-white/[0.1] max-w-none sm:max-w-3xl w-full h-full sm:h-auto max-h-none sm:max-h-[90vh] min-h-0 overflow-y-auto overscroll-contain relative rounded-none sm:rounded-xl shadow-none sm:shadow-2xl sm:shadow-black/50" onclick="event.stopPropagation()">
-            <div class="sticky top-0 z-20 flex gap-3 items-start p-4 sm:p-5 md:p-6 border-b border-white/[0.08] bg-[#141414]/95 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-none">
+            <div class="sticky top-0 z-20 flex gap-3 items-start p-4 sm:p-5 md:p-6 border-b border-white/[0.08] bg-[#141414] backdrop-blur-sm">
                 <div class="min-w-0 flex-1 space-y-2">
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-2">
                         <h2 class="text-base sm:text-lg font-semibold text-white tracking-tight break-words">${blog.title}</h2>
