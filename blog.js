@@ -2,6 +2,25 @@
 
 let blogs = [];
 
+/**
+ * 与 blog.html / index.html 同级的站点根 URL（末尾带 /）。
+ * 支持 https://user.github.io/blog.html 与 https://user.github.io/repo/blog.html
+ */
+function getSiteBaseUrl() {
+    if (typeof window === 'undefined') return '/';
+    const u = new URL(window.location.href);
+    const segs = u.pathname.split('/').filter(Boolean);
+    segs.pop();
+    const path = segs.length ? `/${segs.join('/')}/` : '/';
+    return `${u.origin}${path}`;
+}
+
+function blogFileUrl(filename) {
+    const base = getSiteBaseUrl();
+    const path = `blogs/${filename}`.replace(/\/{2,}/g, '/');
+    return new URL(path, base).href;
+}
+
 function normalizeTags(tags) {
     if (!tags) return [];
     return Array.isArray(tags) ? tags : [tags];
@@ -51,7 +70,8 @@ function parseFrontMatter(content) {
 // 获取博客文件列表
 async function getBlogFiles() {
     try {
-        const response = await fetch('/blogs/');
+        const response = await fetch(new URL('blogs/', getSiteBaseUrl()).href);
+        if (!response.ok) return [];
         const html = await response.text();
         
         // 从HTML中提取.md文件链接
@@ -66,14 +86,25 @@ async function getBlogFiles() {
     }
 }
 
-// 读取并解析单个博客文件
+// 读取并解析单个博客文件（仓库根目录需有 .nojekyll，否则 GitHub Pages 上 Jekyll 可能不发布原始 .md）
 async function readBlogFile(filename) {
+    const url = blogFileUrl(filename);
     try {
-        const response = await fetch(`/blogs/${filename}`);
+        const response = await fetch(url);
+        if (!response.ok) {
+            console.error(
+                `[blog] ${response.status} ${filename}\n  请求: ${url}\n  若线上 404：确认已 push，且仓库根目录存在 .nojekyll（禁用 Jekyll）后重新部署 Pages。`
+            );
+            return null;
+        }
         const content = await response.text();
-        
+        if (!content.trim() || content.trim().startsWith('<!')) {
+            console.error(`Blog ${filename}: 期望 Markdown，实际为 HTML 或空（可能被 Jekyll 改成网页）。请保留仓库根目录的 .nojekyll 文件。`);
+            return null;
+        }
+
         const { metadata, content: markdownContent } = parseFrontMatter(content);
-        
+
         return {
             id: filename.replace('.md', ''),
             filename: filename,
@@ -84,21 +115,32 @@ async function readBlogFile(filename) {
             content: markdownContent
         };
     } catch (error) {
-        console.error(`Failed to read blog file ${filename}:`, error);
+        console.error(`Failed to read blog file ${filename} (${url}):`, error);
         return null;
     }
 }
 
-// 加载所有博客
+const DEFAULT_BLOG_FILES = ['attention-sink-analysis.md'];
+
+// 加载所有博客（优先 siteConfig.blogFiles；GitHub Pages 无目录索引时 getBlogFiles 常为空，故用默认列表兜底）
 async function loadBlogs() {
-    const blogFiles = await getBlogFiles();
-    const blogPromises = blogFiles.map(file => readBlogFile(file));
+    let blogFiles = [];
+    if (typeof siteConfig !== 'undefined' && Array.isArray(siteConfig.blogFiles) && siteConfig.blogFiles.length > 0) {
+        blogFiles = [...siteConfig.blogFiles];
+    } else {
+        blogFiles = await getBlogFiles();
+    }
+    if (blogFiles.length === 0) {
+        blogFiles = [...DEFAULT_BLOG_FILES];
+    }
+
+    const blogPromises = blogFiles.map((file) => readBlogFile(file));
     const loadedBlogs = await Promise.all(blogPromises);
-    
-    // 过滤掉加载失败的博客，并按日期倒序排序
-    blogs = loadedBlogs.filter(blog => blog !== null)
-                      .sort((a, b) => new Date(b.date) - new Date(a.date));
-    
+
+    blogs = loadedBlogs
+        .filter((blog) => blog !== null)
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
     return blogs;
 }
 
@@ -109,8 +151,8 @@ async function renderBlogList() {
     
     // 显示加载状态
     blogPostsContainer.innerHTML = `
-        <div class="py-12 text-center">
-            <p class="text-sm text-neutral-500">Loading…</p>
+        <div class="py-10 text-center">
+            <p class="text-sm text-zinc-500">Loading…</p>
         </div>
     `;
     
@@ -119,33 +161,33 @@ async function renderBlogList() {
     
     if (blogs.length === 0) {
         blogPostsContainer.innerHTML = `
-            <div class="py-12 text-center">
-                <p class="text-neutral-600">No posts yet.</p>
+            <div class="py-10 text-center">
+                <p class="text-zinc-500">No posts yet.</p>
             </div>
         `;
         return;
     }
     
     blogPostsContainer.innerHTML = `
-        <div class="space-y-10">
+        <div class="space-y-0 divide-y divide-white/[0.08]">
             ${blogs.map(blog => `
-                <article class="cursor-pointer group border-b border-neutral-200 pb-10 last:border-0 last:pb-0" onclick="openBlog('${blog.id}')">
-                    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-2">
-                        <h4 class="text-lg font-medium text-neutral-900 group-hover:text-neutral-600 transition-colors">${blog.title}</h4>
-                        <span class="text-xs text-neutral-400 shrink-0">${blog.date}</span>
+                <article class="cursor-pointer group py-5 sm:py-6 first:pt-0 active:bg-white/[0.02] sm:active:bg-transparent -mx-1 px-1 sm:mx-0 sm:px-0 rounded-lg sm:rounded-none" onclick="openBlog('${blog.id}')">
+                    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 mb-1.5">
+                        <h4 class="text-[15px] sm:text-base font-semibold text-white sm:group-hover:text-emerald-400/90 transition-colors tracking-tight break-words pr-1">${blog.title}</h4>
+                        <span class="text-[11px] text-zinc-500 tabular-nums shrink-0">${blog.date}</span>
                     </div>
-                    ${blog.subtitle ? `<p class="text-sm text-neutral-500 mb-3">${blog.subtitle}</p>` : ''}
-                    <p class="text-sm text-neutral-600 leading-relaxed line-clamp-3 mb-4">
+                    ${blog.subtitle ? `<p class="text-xs text-zinc-500 mb-2">${blog.subtitle}</p>` : ''}
+                    <p class="text-sm text-zinc-400 leading-snug line-clamp-3 mb-3">
                         ${blog.content.replace(/#+.+|```[\s\S]*?```|\$\$[\s\S]*?\$\$|\$.+?\$/g, '').substring(0, 200)}…
                     </p>
                     ${normalizeTags(blog.tags).length ? `
                         <div class="flex flex-wrap gap-2">
                             ${normalizeTags(blog.tags).map(tag => `
-                                <span class="text-xs text-neutral-400">${tag}</span>
+                                <span class="text-[11px] font-medium text-zinc-500 px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06]">${tag}</span>
                             `).join('')}
                         </div>
                     ` : ''}
-                    <p class="text-xs text-neutral-400 mt-4 group-hover:text-neutral-600 transition-colors">Read</p>
+                    <p class="text-[11px] font-medium text-accent-color mt-2 opacity-90 group-hover:opacity-100 transition-opacity">Read article →</p>
                 </article>
             `).join('')}
         </div>
@@ -159,32 +201,34 @@ async function openBlog(blogId) {
     
     // 创建博客详情模态框
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-900/40 backdrop-blur-[2px]';
+    modal.className = 'fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-4 bg-black/80 sm:bg-black/70 backdrop-blur-sm';
     
     // 直接渲染markdown内容，包括公式
     const renderedContent = renderMathInMarkdown(blog.content);
     
     modal.innerHTML = `
-        <div class="bg-white border border-neutral-200 max-w-3xl w-full max-h-[90vh] overflow-y-auto relative shadow-lg shadow-neutral-900/5">
-            <button type="button" onclick="this.closest('.fixed').remove()"
-                    class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-900 transition-colors text-sm w-8 h-8 flex items-center justify-center" aria-label="Close">
-                ✕
-            </button>
-            <div class="p-8 md:p-10 border-b border-neutral-100 pr-14">
-                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-2">
-                    <h2 class="text-xl font-semibold text-neutral-900">${blog.title}</h2>
-                    <span class="text-xs text-neutral-400 shrink-0">${blog.date}</span>
-                </div>
-                ${blog.subtitle ? `<p class="text-sm text-neutral-500 mb-4">${blog.subtitle}</p>` : ''}
-                ${normalizeTags(blog.tags).length ? `
-                    <div class="flex flex-wrap gap-2">
-                        ${normalizeTags(blog.tags).map(tag => `
-                            <span class="text-xs text-neutral-400">${tag}</span>
-                        `).join('')}
+        <div class="bg-[#141414] border-0 sm:border border-white/[0.1] max-w-none sm:max-w-3xl w-full h-full sm:h-auto max-h-none sm:max-h-[90vh] min-h-0 overflow-y-auto overscroll-contain relative rounded-none sm:rounded-xl shadow-none sm:shadow-2xl sm:shadow-black/50" onclick="event.stopPropagation()">
+            <div class="sticky top-0 z-20 flex gap-3 items-start p-4 sm:p-5 md:p-6 border-b border-white/[0.08] bg-[#141414]/95 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-none">
+                <div class="min-w-0 flex-1 space-y-2">
+                    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-2">
+                        <h2 class="text-base sm:text-lg font-semibold text-white tracking-tight break-words">${blog.title}</h2>
+                        <span class="text-[11px] sm:text-xs text-zinc-500 tabular-nums shrink-0">${blog.date}</span>
                     </div>
-                ` : ''}
+                    ${blog.subtitle ? `<p class="text-xs text-zinc-500">${blog.subtitle}</p>` : ''}
+                    ${normalizeTags(blog.tags).length ? `
+                        <div class="flex flex-wrap gap-2">
+                            ${normalizeTags(blog.tags).map(tag => `
+                                <span class="text-[11px] font-medium text-zinc-400 px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08]">${tag}</span>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+                <button type="button" onclick="this.closest('.fixed').remove()"
+                        class="shrink-0 -mr-1 text-zinc-500 hover:text-white transition-colors text-sm w-11 h-11 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg hover:bg-white/[0.06]" aria-label="Close">
+                    ✕
+                </button>
             </div>
-            <div class="p-8 md:p-10 blog-content prose max-w-none">
+            <div class="p-4 sm:p-5 md:p-6 pb-[max(2rem,env(safe-area-inset-bottom))] sm:pb-6 blog-content max-w-none">
                 ${renderedContent}
             </div>
         </div>
@@ -205,7 +249,7 @@ marked.use({
     breaks: true,
     gfm: true,
     highlight: function(code, lang) {
-        return `<pre class="bg-neutral-50 p-4 border border-neutral-200 overflow-x-auto text-sm rounded-sm"><code class="language-${lang || ''}">${code}</code></pre>`;
+        return `<pre class="bg-[#0a0a0a] p-4 border border-white/[0.1] overflow-x-auto text-sm rounded-lg"><code class="language-${lang || ''} text-zinc-300">${code}</code></pre>`;
     }
 });
 
@@ -274,52 +318,58 @@ document.addEventListener('DOMContentLoaded', function() {
 const style = document.createElement('style');
 style.textContent = `
     .blog-content {
-        color: #404040;
-        font-size: 0.9375rem;
-        line-height: 1.7;
+        color: #acacbe;
+        font-size: 0.875rem;
+        line-height: 1.65;
     }
 
     .blog-content h1 {
-        color: #171717;
-        font-size: 1.75rem;
+        color: #ececf1;
+        font-size: 1.4rem;
         font-weight: 600;
-        margin-bottom: 1.25rem;
+        margin-bottom: 0.85rem;
         margin-top: 0;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 0.45rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
         letter-spacing: -0.02em;
     }
 
     .blog-content h2 {
-        color: #171717;
-        font-size: 1.25rem;
+        color: #ececf1;
+        font-size: 1.1rem;
         font-weight: 600;
-        margin-top: 2rem;
-        margin-bottom: 0.75rem;
+        margin-top: 1.35rem;
+        margin-bottom: 0.5rem;
         letter-spacing: -0.02em;
     }
 
     .blog-content h3 {
-        color: #262626;
-        font-size: 1.0625rem;
+        color: #d4d4d8;
+        font-size: 1rem;
         font-weight: 600;
-        margin-top: 1.5rem;
-        margin-bottom: 0.5rem;
+        margin-top: 1.1rem;
+        margin-bottom: 0.35rem;
     }
 
     .blog-content p {
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
     }
 
     .blog-content a {
-        color: #171717;
-        text-decoration: underline;
-        text-underline-offset: 3px;
-        text-decoration-color: #d4d4d4;
+        color: #10a37f;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(16, 163, 127, 0.35);
+        transition: color 0.15s, border-color 0.15s;
     }
 
     .blog-content a:hover {
-        text-decoration-color: #a3a3a3;
+        color: #12b886;
+        border-bottom-color: rgba(18, 184, 134, 0.6);
+    }
+
+    .blog-content .katex,
+    .blog-content .katex * {
+        color: #ececf1 !important;
     }
 
     .blog-content img {
@@ -327,8 +377,8 @@ style.textContent = `
         height: auto;
         display: block;
         margin: 1.5rem 0;
-        border: 1px solid #e5e5e5;
-        border-radius: 2px;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
     }
 
     .blog-content ul,
@@ -342,43 +392,45 @@ style.textContent = `
     }
 
     .blog-content li::marker {
-        color: #a3a3a3;
+        color: #6e6e80;
     }
 
     .blog-content code {
-        background-color: #f5f5f5;
-        color: #171717;
-        padding: 0.15rem 0.35rem;
-        border-radius: 2px;
+        background-color: rgba(255,255,255,0.06);
+        color: #ececf1;
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
         font-size: 0.875em;
+        border: 1px solid rgba(255,255,255,0.08);
     }
 
     .blog-content pre {
-        background-color: #fafafa;
+        background-color: #0a0a0a;
         padding: 1rem;
-        border-radius: 2px;
+        border-radius: 8px;
         margin-bottom: 1rem;
         overflow-x: auto;
-        border: 1px solid #e5e5e5;
+        border: 1px solid rgba(255,255,255,0.1);
     }
 
     .blog-content pre code {
         background: none;
         padding: 0;
-        color: #404040;
+        border: none;
+        color: #d4d4d8;
     }
 
     .blog-content blockquote {
-        border-left: 2px solid #e5e5e5;
+        border-left: 3px solid rgba(16, 163, 127, 0.45);
         padding-left: 1rem;
         margin: 1rem 0;
-        color: #737373;
+        color: #8e8ea0;
     }
 
     .blog-content hr {
         border: none;
-        border-top: 1px solid #e5e5e5;
-        margin: 2rem 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        margin: 1.35rem 0;
     }
 
     .blog-content table {
@@ -389,21 +441,22 @@ style.textContent = `
     }
 
     .blog-content th {
-        background-color: #fafafa;
-        color: #171717;
+        background-color: rgba(255,255,255,0.04);
+        color: #ececf1;
         font-weight: 600;
         padding: 0.5rem 0.75rem;
         text-align: left;
-        border: 1px solid #e5e5e5;
+        border: 1px solid rgba(255,255,255,0.1);
     }
 
     .blog-content td {
         padding: 0.5rem 0.75rem;
-        border: 1px solid #e5e5e5;
+        border: 1px solid rgba(255,255,255,0.08);
+        color: #acacbe;
     }
 
     .blog-content tr:nth-child(even) {
-        background-color: #fafafa;
+        background-color: rgba(255,255,255,0.02);
     }
 
     .line-clamp-3 {

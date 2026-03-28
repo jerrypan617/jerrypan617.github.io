@@ -5,6 +5,7 @@ const siteConfig = {
         email: "pan2004xu@gmail.com",
         phone: "(+86) 13732230785",
         bootMessage: "Computer science · Xi'an Jiaotong University",
+        photo: "resources/my_face.jpg",
         social: {
             x: "https://x.com/Jerry1865942",
             huggingface: "https://huggingface.co/JERRYPAN617",
@@ -18,13 +19,15 @@ const siteConfig = {
                 degree: "PhD",
                 major: "CS",
                 university: "Xi'an JiaoTong University",
-                period: "2026.09-Future"
+                period: "2026.09-Future",
+                logo: "resources/xian-jiaotong-university-logo-1024px.png"
             },
             {
                 degree: "Bachelor",
                 major: "CS",
                 university: "Hefei University of Technology",
-                period: "2022.09-2026.07"
+                period: "2022.09-2026.07",
+                logo: "resources/hefei-university-of-technology-logo-1024px.png"
             }
         ],
         focus: "LLM Memory Augmentation & Vision-Text Alignment"
@@ -130,109 +133,10 @@ const siteConfig = {
         systemId: "© Xu Pan",
         designPattern: ""
     },
-    
-    // Blog posts
-    blogs: [
-        {
-            id: "1",
-            title: "LLM Memory Augmentation Techniques",
-            subtitle: "Enhancing large language models with external memory systems",
-            date: "2024-01-15",
-            content: `# LLM Memory Augmentation
 
-Large Language Models (LLMs) have revolutionized natural language processing, but they still face limitations in long-term memory and knowledge retention. In this post, I'll explore various techniques for augmenting LLM memory.
-
-## 1. Retrieval-Augmented Generation (RAG)
-
-RAG combines retrieval of external documents with generation:
-
-\`\`\`python
-def rag_pipeline(query):
-    # Retrieve relevant documents
-    documents = retriever.retrieve(query)
-    # Generate response using retrieved documents
-    response = llm.generate(query, documents)
-    return response
-\`\`\`
-
-## 2. Attention Mechanisms
-
-The transformer architecture uses self-attention to process input sequences:
-
-$$
-Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V
-$$
-
-This allows the model to focus on relevant parts of the input when generating output.
-
-## 3. Memory Networks
-
-Memory networks introduce explicit memory components that can be read from and written to:
-
-- External memory banks
-- Differentiable access mechanisms
-- Long-term knowledge storage
-
-## 4. Recent Advances
-
-Recent work has focused on:
-
-- Efficient retrieval algorithms
-- Dynamic memory management
-- Multi-modal memory integration
-
-## Conclusion
-
-Memory augmentation is a promising direction for improving LLMs, enabling them to handle longer contexts and retain knowledge more effectively.
-
----
-
-*References:*
-- Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks
-- Memory-Augmented Neural Networks
-- The Transformer Architecture`,
-            tags: ["LLM", "Memory", "AI", "Research"]
-        },
-        {
-            id: "2",
-            title: "Vision-Text Alignment in Multi-modal Models",
-            subtitle: "Bridging the gap between visual and textual representations",
-            date: "2024-02-01",
-            content: `# Vision-Text Alignment
-
-Multi-modal models that can process both images and text have become increasingly important. A key challenge is aligning visual and textual representations.
-
-## Contrastive Learning
-
-Contrastive learning techniques like CLIP have shown success in aligning vision and text:
-
-$$
-L = -\log\frac{e^{sim(I, T)/\tau}}{\sum_{t=1}^N e^{sim(I, T_t)/\tau}} - \log\frac{e^{sim(I, T)/\tau}}{\sum_{i=1}^N e^{sim(I_i, T)/\tau}}
-$$
-
-## Cross-Modal Attention
-
-Cross-modal attention mechanisms allow the model to attend to relevant parts of one modality when processing another:
-
-- Image attention over text
-- Text attention over image regions
-- Multi-head cross-modal attention
-
-## Evaluation Metrics
-
-Common metrics for vision-text alignment include:
-
-- Zero-shot classification accuracy
-- Text-to-image retrieval
-- Image-to-text retrieval
-
-## Future Directions
-
-- Fine-grained alignment at the region level
-- Dynamic attention mechanisms
-- Incorporating structured knowledge`,
-            tags: ["Multi-modal", "Vision", "NLP", "AI"]
-        }
+    /** Markdown 文件名列表（相对 /blogs/）。GitHub Pages 无目录索引时以此为准；本地也可继续用目录扫描作补充。 */
+    blogFiles: [
+        "attention-sink-analysis.md"
     ]
 };
 

@@ -1,16 +1,18 @@
-// Tailwind CSS Configuration
+// Tailwind CSS Configuration — OpenAI / Grok–style dark product UI
 tailwind.config = {
+    darkMode: 'class',
     theme: {
         extend: {
             colors: {
-                'neon-cyan': '#00f3ff',
-                'neon-pink': '#ff00ff',
-                'neon-lime': '#ccff00',
-                'retro-bg': '#050505',
-                'retro-dark': '#0a0a0a',
+                'accent-color': '#10a37f',
+                surface: {
+                    DEFAULT: '#0a0a0a',
+                    raised: '#141414',
+                    overlay: '#1a1a1a',
+                },
             },
             fontFamily: {
-                sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+                sans: ['"Inter"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
             },
             animation: {
                 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
