@@ -1,7 +1,11 @@
 // 博客渲染功能
 
-// 博客数据缓存
 let blogs = [];
+
+function normalizeTags(tags) {
+    if (!tags) return [];
+    return Array.isArray(tags) ? tags : [tags];
+}
 
 // 解析YAML Front Matter
 function parseFrontMatter(content) {
@@ -105,8 +109,8 @@ async function renderBlogList() {
     
     // 显示加载状态
     blogPostsContainer.innerHTML = `
-        <div class="bg-gray-900 border-2 border-gray-800 p-6 text-center">
-            <p class="text-neon-lime animate-pulse">Loading blog posts...</p>
+        <div class="py-12 text-center">
+            <p class="text-sm text-neutral-500">Loading…</p>
         </div>
     `;
     
@@ -115,42 +119,34 @@ async function renderBlogList() {
     
     if (blogs.length === 0) {
         blogPostsContainer.innerHTML = `
-            <div class="bg-gray-900 border-2 border-gray-800 p-6 text-center">
-                <p class="text-gray-400">No blog posts available yet.</p>
-                <p class="text-gray-600 text-sm mt-2">Coming soon!</p>
+            <div class="py-12 text-center">
+                <p class="text-neutral-600">No posts yet.</p>
             </div>
         `;
         return;
     }
     
     blogPostsContainer.innerHTML = `
-        <div class="space-y-8">
+        <div class="space-y-10">
             ${blogs.map(blog => `
-                <div class="bg-gray-900 border-2 border-gray-800 p-6 hover:border-neon-lime hover:shadow-neon-lime transition-all duration-300 cursor-pointer group" onclick="openBlog('${blog.id}')">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-3">
-                        <h4 class="text-neon-cyan font-bold text-xl mb-2 md:mb-0 group-hover:text-white transition-colors">${blog.title}</h4>
-                        <span class="text-xs text-gray-500 font-mono">${blog.date}</span>
+                <article class="cursor-pointer group border-b border-neutral-200 pb-10 last:border-0 last:pb-0" onclick="openBlog('${blog.id}')">
+                    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-2">
+                        <h4 class="text-lg font-medium text-neutral-900 group-hover:text-neutral-600 transition-colors">${blog.title}</h4>
+                        <span class="text-xs text-neutral-400 shrink-0">${blog.date}</span>
                     </div>
-                    <p class="text-sm text-gray-500 mb-4 font-bold">${blog.subtitle}</p>
-                    
-                    <div class="mb-4">
-                        <p class="text-gray-300 text-sm leading-relaxed line-clamp-3">
-                            ${blog.content.replace(/#+.+|```[\s\S]*?```|\$\$[\s\S]*?\$\$|\$.+?\$/g, '').substring(0, 200)}...
-                        </p>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        ${blog.tags.map(tag => `
-                            <span class="text-[10px] bg-gray-800 text-neon-pink px-2 py-0.5">${tag}</span>
-                        `).join('')}
-                    </div>
-                    
-                    <div class="mt-4 text-right">
-                        <span class="text-xs text-neon-lime hover:underline group-hover:text-white transition-colors">
-                            READ MORE →
-                        </span>
-                    </div>
-                </div>
+                    ${blog.subtitle ? `<p class="text-sm text-neutral-500 mb-3">${blog.subtitle}</p>` : ''}
+                    <p class="text-sm text-neutral-600 leading-relaxed line-clamp-3 mb-4">
+                        ${blog.content.replace(/#+.+|```[\s\S]*?```|\$\$[\s\S]*?\$\$|\$.+?\$/g, '').substring(0, 200)}…
+                    </p>
+                    ${normalizeTags(blog.tags).length ? `
+                        <div class="flex flex-wrap gap-2">
+                            ${normalizeTags(blog.tags).map(tag => `
+                                <span class="text-xs text-neutral-400">${tag}</span>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    <p class="text-xs text-neutral-400 mt-4 group-hover:text-neutral-600 transition-colors">Read</p>
+                </article>
             `).join('')}
         </div>
     `;
@@ -163,36 +159,32 @@ async function openBlog(blogId) {
     
     // 创建博客详情模态框
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80 backdrop-blur-sm';
+    modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-900/40 backdrop-blur-[2px]';
     
     // 直接渲染markdown内容，包括公式
     const renderedContent = renderMathInMarkdown(blog.content);
     
     modal.innerHTML = `
-        <div class="bg-gray-900 border-2 border-neon-cyan shadow-neon-cyan max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
-            <!-- Close button -->
-            <button onclick="this.closest('.fixed').remove()" 
-                    class="absolute top-4 right-4 text-gray-500 hover:text-neon-pink transition-colors text-xl font-bold">
+        <div class="bg-white border border-neutral-200 max-w-3xl w-full max-h-[90vh] overflow-y-auto relative shadow-lg shadow-neutral-900/5">
+            <button type="button" onclick="this.closest('.fixed').remove()"
+                    class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-900 transition-colors text-sm w-8 h-8 flex items-center justify-center" aria-label="Close">
                 ✕
             </button>
-            
-            <!-- Blog header -->
-            <div class="p-6 border-b border-gray-800">
-                <div class="flex flex-col md:flex-row md:items-center justify-between mb-3">
-                    <h2 class="text-neon-cyan font-bold text-2xl mb-2 md:mb-0">${blog.title}</h2>
-                    <span class="text-xs text-gray-500 font-mono">${blog.date}</span>
+            <div class="p-8 md:p-10 border-b border-neutral-100 pr-14">
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-2">
+                    <h2 class="text-xl font-semibold text-neutral-900">${blog.title}</h2>
+                    <span class="text-xs text-neutral-400 shrink-0">${blog.date}</span>
                 </div>
-                <p class="text-sm text-gray-500 mb-4 font-bold">${blog.subtitle}</p>
-                
-                <div class="flex flex-wrap gap-2">
-                    ${blog.tags.map(tag => `
-                        <span class="text-[10px] bg-gray-800 text-neon-pink px-2 py-0.5">${tag}</span>
-                    `).join('')}
-                </div>
+                ${blog.subtitle ? `<p class="text-sm text-neutral-500 mb-4">${blog.subtitle}</p>` : ''}
+                ${normalizeTags(blog.tags).length ? `
+                    <div class="flex flex-wrap gap-2">
+                        ${normalizeTags(blog.tags).map(tag => `
+                            <span class="text-xs text-neutral-400">${tag}</span>
+                        `).join('')}
+                    </div>
+                ` : ''}
             </div>
-            
-            <!-- Blog content -->
-            <div class="p-6 blog-content prose prose-invert max-w-none">
+            <div class="p-8 md:p-10 blog-content prose max-w-none">
                 ${renderedContent}
             </div>
         </div>
@@ -213,8 +205,7 @@ marked.use({
     breaks: true,
     gfm: true,
     highlight: function(code, lang) {
-        // 添加代码高亮样式
-        return `<pre class="bg-gray-800 p-6 rounded-md overflow-x-auto text-sm"><code class="language-${lang || ''}">${code}</code></pre>`;
+        return `<pre class="bg-neutral-50 p-4 border border-neutral-200 overflow-x-auto text-sm rounded-sm"><code class="language-${lang || ''}">${code}</code></pre>`;
     }
 });
 
@@ -282,142 +273,139 @@ document.addEventListener('DOMContentLoaded', function() {
 // 添加CSS样式用于博客内容
 const style = document.createElement('style');
 style.textContent = `
-    /* Blog content styles */
     .blog-content {
-        color: #e0e0e0;
+        color: #404040;
+        font-size: 0.9375rem;
+        line-height: 1.7;
     }
-    
+
     .blog-content h1 {
-        color: #00f3ff;
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-        font-weight: bold;
-        border-bottom: 2px solid #333;
+        color: #171717;
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 1.25rem;
+        margin-top: 0;
         padding-bottom: 0.5rem;
+        border-bottom: 1px solid #e5e5e5;
+        letter-spacing: -0.02em;
     }
-    
+
     .blog-content h2 {
-        color: #ccff00;
-        font-size: 1.5rem;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        font-weight: bold;
-    }
-    
-    .blog-content h3 {
-        color: #ff00ff;
+        color: #171717;
         font-size: 1.25rem;
-        margin-top: 1.5rem;
+        font-weight: 600;
+        margin-top: 2rem;
         margin-bottom: 0.75rem;
-        font-weight: bold;
+        letter-spacing: -0.02em;
     }
-    
+
+    .blog-content h3 {
+        color: #262626;
+        font-size: 1.0625rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
     .blog-content p {
         margin-bottom: 1rem;
-        line-height: 1.6;
-        color: #e0e0e0;
     }
-    
+
     .blog-content a {
-        color: #00f3ff;
+        color: #171717;
         text-decoration: underline;
-        transition: color 0.3s;
+        text-underline-offset: 3px;
+        text-decoration-color: #d4d4d4;
     }
-    
+
     .blog-content a:hover {
-        color: #ccff00;
+        text-decoration-color: #a3a3a3;
     }
-    
-    /* Image styles */
+
     .blog-content img {
         max-width: 100%;
         height: auto;
         display: block;
-        margin: 1.5rem auto;
-        border: 2px solid #333;
-        border-radius: 0.5rem;
-        box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+        margin: 1.5rem 0;
+        border: 1px solid #e5e5e5;
+        border-radius: 2px;
     }
-    
+
     .blog-content ul,
     .blog-content ol {
         margin-bottom: 1rem;
-        padding-left: 1.5rem;
+        padding-left: 1.25rem;
     }
-    
+
     .blog-content li {
-        margin-bottom: 0.5rem;
-        color: #e0e0e0;
+        margin-bottom: 0.35rem;
     }
-    
+
     .blog-content li::marker {
-        color: #ff00ff;
+        color: #a3a3a3;
     }
-    
+
     .blog-content code {
-        background-color: #1a1a1a;
-        color: #ff00ff;
-        padding: 0.2rem 0.4rem;
-        border-radius: 0.25rem;
-        font-family: 'Courier Prime', monospace;
-        font-size: 0.9em;
+        background-color: #f5f5f5;
+        color: #171717;
+        padding: 0.15rem 0.35rem;
+        border-radius: 2px;
+        font-size: 0.875em;
     }
-    
+
     .blog-content pre {
-        background-color: #1a1a1a;
+        background-color: #fafafa;
         padding: 1rem;
-        border-radius: 0.5rem;
+        border-radius: 2px;
         margin-bottom: 1rem;
         overflow-x: auto;
-        border: 1px solid #333;
+        border: 1px solid #e5e5e5;
     }
-    
+
     .blog-content pre code {
         background: none;
         padding: 0;
-        color: #e0e0e0;
+        color: #404040;
     }
-    
+
     .blog-content blockquote {
-        border-left: 4px solid #00f3ff;
+        border-left: 2px solid #e5e5e5;
         padding-left: 1rem;
-        margin-left: 0;
-        margin-bottom: 1rem;
-        color: #a0a0a0;
-        font-style: italic;
+        margin: 1rem 0;
+        color: #737373;
     }
-    
+
     .blog-content hr {
         border: none;
-        border-top: 1px solid #333;
+        border-top: 1px solid #e5e5e5;
         margin: 2rem 0;
     }
-    
+
     .blog-content table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 1rem;
+        font-size: 0.875rem;
     }
-    
+
     .blog-content th {
-        background-color: #1a1a1a;
-        color: #00f3ff;
-        padding: 0.5rem;
+        background-color: #fafafa;
+        color: #171717;
+        font-weight: 600;
+        padding: 0.5rem 0.75rem;
         text-align: left;
-        border: 1px solid #333;
+        border: 1px solid #e5e5e5;
     }
-    
+
     .blog-content td {
-        padding: 0.5rem;
-        border: 1px solid #333;
-        color: #e0e0e0;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #e5e5e5;
     }
-    
+
     .blog-content tr:nth-child(even) {
-        background-color: #1a1a1a;
+        background-color: #fafafa;
     }
-    
-    /* Line clamp for blog excerpts */
+
     .line-clamp-3 {
         overflow: hidden;
         display: -webkit-box;

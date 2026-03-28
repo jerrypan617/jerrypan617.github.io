@@ -4,7 +4,7 @@ const siteConfig = {
         title: "PhD_STUDENT [Computer Science]",
         email: "pan2004xu@gmail.com",
         phone: "(+86) 13732230785",
-        bootMessage: "> SYSTEM_BOOT_SEQUENCE_INITIATED...",
+        bootMessage: "Computer science · Xi'an Jiaotong University",
         social: {
             x: "https://x.com/Jerry1865942",
             huggingface: "https://huggingface.co/JERRYPAN617",
@@ -127,8 +127,8 @@ const siteConfig = {
     ],
 
     footer: {
-        systemId: "XP-2025",
-        designPattern: "CASSETTE_FUTURISM"
+        systemId: "© Xu Pan",
+        designPattern: ""
     },
     
     // Blog posts
