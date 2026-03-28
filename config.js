@@ -1,7 +1,21 @@
 const siteConfig = {
+    /**
+     * 站点根 URL（无末尾斜杠），与 feed.xml、各页 canonical/OG 保持一致。
+     * 若使用自定义域名或 Project Pages，请同时改 HTML/feed 中的绝对链接。
+     */
+    site: {
+        url: 'https://jerrypan617.github.io',
+        /** Open Graph / Twitter 默认图，须为 https 绝对地址 */
+        ogImage: 'https://jerrypan617.github.io/resources/my_face.jpg'
+    },
+
+    /** 填入 Google Analytics 4 衡量 ID（G-xxxxxxxxxx）后启用；留空则不加载 gtag */
+    analytics: {
+        ga4MeasurementId: 'G-5C9YNPZ5SD'
+    },
+
     personal: {
         name: "Xu_Pan",
-        title: "PhD_STUDENT [Computer Science]",
         email: "pan2004xu@gmail.com",
         phone: "(+86) 13732230785",
         bootMessage: "Computer science · Xi'an Jiaotong University",

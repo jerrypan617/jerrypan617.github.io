@@ -21,18 +21,23 @@ function renderHeader() {
         <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 md:gap-6 items-center sm:items-start text-center sm:text-left fade-in staggered-1">
             ${avatarBlock}
             <div class="flex flex-col gap-2 sm:gap-2.5 min-w-0 flex-1 w-full sm:w-auto pt-0 sm:pt-0.5">
-                <p class="text-[10px] sm:text-[11px] font-medium tracking-[0.12em] uppercase text-zinc-500">
-                    ${personal.bootMessage}
-                </p>
                 <h1 class="text-[1.625rem] sm:text-3xl md:text-[2.25rem] lg:text-[2.5rem] font-semibold text-white tracking-[-0.03em] leading-[1.15] sm:leading-tight">
                     <a href="index.html" class="hover:text-white/80 transition-colors">${displayName}</a>
                 </h1>
-                <p class="text-[14px] sm:text-[15px] md:text-base text-zinc-400 leading-snug max-w-2xl font-normal mx-auto sm:mx-0 break-words">
-                    ${personal.title.replace(/_/g, ' ').replace('[', ' — ').replace(']', '')}
+                <p class="text-[10px] sm:text-[11px] font-medium tracking-[0.12em] uppercase text-zinc-500">
+                    ${personal.bootMessage}
                 </p>
-                <div class="flex flex-col sm:flex-row sm:flex-wrap justify-center sm:justify-start gap-x-6 gap-y-2 text-sm">
-                <a href="mailto:${personal.email}" class="link-minimal min-h-[44px] sm:min-h-0 inline-flex items-center justify-center sm:justify-start">${personal.email}</a>
-                <a href="tel:${personal.phone.replace(/[()\s-]/g, '')}" class="link-minimal min-h-[44px] sm:min-h-0 inline-flex items-center justify-center sm:justify-start">${personal.phone}</a>
+                <div class="w-full min-w-0 flex justify-center sm:justify-start overflow-x-auto [scrollbar-width:thin]">
+                <div class="flex flex-row flex-nowrap items-center gap-x-4 sm:gap-x-6 text-sm">
+                <a href="mailto:${personal.email}" class="link-minimal min-h-[44px] sm:min-h-0 inline-flex items-center justify-center sm:justify-start gap-1.5 shrink-0">
+                    <svg class="w-3.5 h-3.5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    ${personal.email}
+                </a>
+                <a href="tel:${personal.phone.replace(/[()\s-]/g, '')}" class="link-minimal min-h-[44px] sm:min-h-0 inline-flex items-center justify-center sm:justify-start gap-1.5 shrink-0">
+                    <svg class="w-3.5 h-3.5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    ${personal.phone}
+                </a>
+                </div>
             </div>
 
             <nav class="flex flex-wrap gap-2 sm:gap-1.5 pt-1 justify-center sm:justify-start" aria-label="${onBlogPage ? 'Site navigation' : 'Social links'}">
