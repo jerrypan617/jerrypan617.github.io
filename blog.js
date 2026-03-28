@@ -151,7 +151,7 @@ async function renderBlogList() {
     
     // 显示加载状态
     blogPostsContainer.innerHTML = `
-        <div class="py-10 text-center">
+        <div class="py-6 text-center">
             <p class="text-sm text-zinc-500">Loading…</p>
         </div>
     `;
@@ -161,7 +161,7 @@ async function renderBlogList() {
     
     if (blogs.length === 0) {
         blogPostsContainer.innerHTML = `
-            <div class="py-10 text-center">
+            <div class="py-6 text-center">
                 <p class="text-zinc-500">No posts yet.</p>
             </div>
         `;
@@ -171,7 +171,7 @@ async function renderBlogList() {
     blogPostsContainer.innerHTML = `
         <div class="space-y-0 divide-y divide-white/[0.08]">
             ${blogs.map(blog => `
-                <article class="cursor-pointer group py-5 sm:py-6 first:pt-0 active:bg-white/[0.02] sm:active:bg-transparent -mx-1 px-1 sm:mx-0 sm:px-0 rounded-lg sm:rounded-none" onclick="openBlog('${blog.id}')">
+                <article class="cursor-pointer group py-3.5 sm:py-4 first:pt-0 active:bg-white/[0.02] sm:active:bg-transparent -mx-1 px-1 sm:mx-0 sm:px-0 rounded-lg sm:rounded-none" onclick="openBlog('${blog.id}')">
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 mb-1.5">
                         <h4 class="text-[15px] sm:text-base font-semibold text-white sm:group-hover:text-emerald-400/90 transition-colors tracking-tight break-words pr-1">${blog.title}</h4>
                         <span class="text-[11px] text-zinc-500 tabular-nums shrink-0">${blog.date}</span>
