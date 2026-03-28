@@ -7,7 +7,7 @@ const siteConfig = {
         bootMessage: "Computer science · Xi'an Jiaotong University",
         photo: "resources/my_face.jpg",
         social: {
-            x: "https://x.com/Jerry1865942",
+            googleScholar: "https://scholar.google.com/citations?user=lSA9xFoAAAAJ&hl=zh-CN",
             huggingface: "https://huggingface.co/JERRYPAN617",
             reddit: "https://www.reddit.com/user/Background-Pilot-288/"
         }
@@ -16,21 +16,22 @@ const siteConfig = {
     profile: {
         education: [
             {
-                degree: "PhD",
-                major: "CS",
-                university: "Xi'an JiaoTong University",
-                period: "2026.09-Future",
-                logo: "resources/xian-jiaotong-university-logo-1024px.png"
+                logo: "resources/xian-jiaotong-university-logo-1024px.png",
+                title: "Ph.D. in Computer Science",
+                institution: "Xi'an Jiaotong University",
+                unit: "School of Computer Science and Technology",
+                location: "Xi'an, Shaanxi, China",
+                period: "Sep 2026 — present"
             },
             {
-                degree: "Bachelor",
-                major: "CS",
-                university: "Hefei University of Technology",
-                period: "2022.09-2026.07",
-                logo: "resources/hefei-university-of-technology-logo-1024px.png"
+                logo: "resources/hefei-university-of-technology-logo-1024px.png",
+                title: "B.Eng. in Computer Science and Technology",
+                institution: "Hefei University of Technology",
+                unit: "School of Computer Science and Information Engineering",
+                location: "Hefei, Anhui, China",
+                period: "Sep 2022 — Jul 2026"
             }
-        ],
-        focus: "LLM Memory Augmentation & Vision-Text Alignment"
+        ]
     },
 
     skills: {
@@ -48,9 +49,11 @@ const siteConfig = {
             "TRL"
         ],
         domains: [
-            "LLM Memory Augmentation",
-            "Vision-Text Alignment",
-            "Reinforcement Learning from Human Feedback"
+            "Latent Reasoning",
+            "LLM Memory",
+            "RLHF",
+            "XAI",
+            "Image Reconstruction"
         ]
     },
 
@@ -80,23 +83,6 @@ const siteConfig = {
             description: "A 32-bit x86 operating system kernel written in C and x86 asm, featuring an architecture with process & memory management, file system, and an interactive shell.",
             technologies: ["C", "Assembly", "Makefile"],
             github: "https://github.com/jerrypan617/PXOS",
-        },
-        {
-            type: "PROJECT",
-            name: "Qwen2.5 Fine-Tuning",
-            subtitle: "Instruct Model with GRPO",
-            description: "Fine-tuned LLM using GRPO to implement Chain-of-Thought reasoning, achieving a ~10% increase in mathematical reasoning accuracy.",
-            technologies: ["Python", "Transformers", "TRL", "PyTorch"],
-            github: "",
-            paper: ""
-        },
-        {
-            type: "PROJECT",
-            name: "Med-VQA-BLIP",
-            subtitle: "BLIP Fine-Tuning",
-            description: "A fine-tuned BLIP-VQA model for medical pathology image question answering with open-ended text generation.",
-            technologies: ["Python", "Transformers","Peft", "PyTorch"],
-            github: "https://github.com/jerrypan617/Medical-VQA-BLIP",
         },
         {
             type: "PROJECT",

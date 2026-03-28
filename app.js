@@ -47,10 +47,10 @@ function renderHeader() {
                     Blog
                 </a>
                 `}
-                ${personal.social.x ? `
-                    <a href="${personal.social.x}" target="_blank" rel="noopener noreferrer" class="pill inline-flex items-center justify-center gap-2 no-underline max-sm:min-h-[44px] max-sm:px-3.5 max-sm:py-2.5">
-                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        X
+                ${personal.social.googleScholar ? `
+                    <a href="${personal.social.googleScholar}" target="_blank" rel="noopener noreferrer" class="pill inline-flex items-center justify-center gap-2 no-underline max-sm:min-h-[44px] max-sm:px-3.5 max-sm:py-2.5" title="Google Scholar" aria-label="Google Scholar profile">
+                        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        <span class="whitespace-nowrap">Google Scholar</span>
                     </a>
                 ` : ''}
                 ${personal.social.huggingface ? `
@@ -75,28 +75,30 @@ function renderProfile() {
         <div class="space-y-5 sm:space-y-6 fade-in staggered-2">
             ${profileData.education && profileData.education.length > 0 ? `
                 <div class="grid gap-4 sm:gap-5">
-                    ${profileData.education.map((edu) => `
-                        <div class="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-                            <div class="flex gap-2.5 sm:gap-3.5 min-w-0 flex-1">
+                    ${profileData.education.map((edu) => {
+                        const title = edu.title || `${edu.degree} in ${edu.major}`;
+                        const institution = edu.institution || edu.university || '';
+                        const altLogo = institution || title;
+                        return `
+                        <div class="flex gap-2.5 sm:gap-3.5 items-start">
                                 ${edu.logo ? `
-                                    <img src="${edu.logo}" alt="${edu.university}" width="48" height="48" loading="lazy" decoding="async"
-                                         class="w-10 h-10 sm:w-11 sm:h-12 shrink-0 object-contain rounded-lg bg-white/[0.06] p-1 sm:p-1.5 border border-white/[0.1]" />
+                                    <img src="${edu.logo}" alt="${altLogo}" width="48" height="48" loading="lazy" decoding="async"
+                                         class="w-10 h-10 sm:w-11 sm:h-12 shrink-0 object-contain rounded-lg bg-white/[0.06] p-1 sm:p-1.5 border border-white/[0.1] mt-0.5" />
                                 ` : ''}
-                                <div class="flex flex-col gap-0.5 min-w-0">
-                                    <h4 class="text-white font-semibold text-[15px] sm:text-base tracking-tight">${edu.degree} in ${edu.major}</h4>
-                                    <p class="text-zinc-500 text-xs sm:text-sm break-words">${edu.university}</p>
+                                <div class="min-w-0 flex-1 flex flex-col gap-1">
+                                    <div class="flex items-start justify-between gap-2 sm:gap-3">
+                                        <h4 class="text-white font-semibold text-[15px] sm:text-base tracking-tight leading-snug min-w-0 flex-1">${title}</h4>
+                                        <span class="text-[10px] font-medium text-zinc-500 tabular-nums shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">${edu.period}</span>
+                                    </div>
+                                    <p class="text-zinc-400 text-sm font-medium break-words">${institution}</p>
+                                    ${edu.unit ? `<p class="text-zinc-500 text-xs sm:text-sm break-words">${edu.unit}</p>` : ''}
+                                    ${edu.location ? `<p class="text-zinc-600 text-[11px] sm:text-xs">${edu.location}</p>` : ''}
                                 </div>
-                            </div>
-                            <span class="text-[10px] font-medium text-zinc-500 tabular-nums shrink-0 px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] w-fit self-start sm:self-auto sm:ml-2">${edu.period}</span>
                         </div>
-                    `).join('')}
+                    `;
+                    }).join('')}
                 </div>
             ` : ''}
-            <div class="p-3.5 sm:p-4 md:p-5 rounded-lg sm:rounded-xl bg-white/[0.03] border border-white/[0.08]">
-                <p class="text-zinc-400 leading-relaxed text-[13px] sm:text-sm md:text-[15px]">
-                    <span class="font-semibold text-white mr-2">Focus.</span>${profileData.focus}
-                </p>
-            </div>
         </div>
     `;
 }
