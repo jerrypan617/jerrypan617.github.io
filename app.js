@@ -85,10 +85,12 @@ function renderProfile() {
                         const institution = edu.institution || edu.university || '';
                         const altLogo = institution || title;
                         return `
-                        <div class="flex gap-2.5 sm:gap-3.5 items-start">
+                        <div class="flex gap-2.5 sm:gap-3.5 items-stretch">
                                 ${edu.logo ? `
-                                    <img src="${edu.logo}" alt="${altLogo}" width="48" height="48" loading="lazy" decoding="async"
-                                         class="w-10 h-10 sm:w-11 sm:h-12 shrink-0 object-contain rounded-lg bg-white/[0.06] p-1 sm:p-1.5 border border-white/[0.1] mt-0.5" />
+                                    <div class="flex w-[4.25rem] sm:w-[4.75rem] shrink-0 items-center justify-center self-stretch" aria-hidden="true">
+                                        <img src="${edu.logo}" alt="${altLogo}" width="96" height="96" loading="lazy" decoding="async"
+                                             class="max-h-full w-full h-full object-contain" />
+                                    </div>
                                 ` : ''}
                                 <div class="min-w-0 flex-1 flex flex-col gap-1">
                                     <div class="flex items-start justify-between gap-2 sm:gap-3">
@@ -97,7 +99,10 @@ function renderProfile() {
                                     </div>
                                     <p class="text-zinc-400 text-sm font-medium break-words">${institution}</p>
                                     ${edu.unit ? `<p class="text-zinc-500 text-xs sm:text-sm break-words">${edu.unit}</p>` : ''}
-                                    ${edu.location ? `<p class="text-zinc-600 text-[11px] sm:text-xs">${edu.location}</p>` : ''}
+                                    ${edu.location ? `<p class="text-zinc-600 text-[11px] sm:text-xs flex items-start gap-1.5 min-w-0">
+                                        <svg class="w-3.5 h-3.5 shrink-0 text-zinc-500 mt-px" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                        <span class="min-w-0 break-words">${edu.location}</span>
+                                    </p>` : ''}
                                 </div>
                         </div>
                     `;
