@@ -31,7 +31,7 @@ const siteConfig = {
         education: [
             {
                 logo: "resources/xian-jiaotong-university-logo-1024px.png",
-                title: "Ph.D. in Computer Science",
+                title: "Ph.D. in Computer Science and Technology",
                 institution: "Xi'an Jiaotong University",
                 unit: "School of Computer Science and Technology",
                 location: "Xi'an, Shaanxi, China",
