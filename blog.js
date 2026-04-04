@@ -152,7 +152,7 @@ async function renderBlogList() {
     // 显示加载状态
     blogPostsContainer.innerHTML = `
         <div class="py-6 text-center">
-            <p class="text-sm text-zinc-500">Loading…</p>
+            <p class="text-sm text-zinc-600">Loading…</p>
         </div>
     `;
     
@@ -162,32 +162,32 @@ async function renderBlogList() {
     if (blogs.length === 0) {
         blogPostsContainer.innerHTML = `
             <div class="py-6 text-center">
-                <p class="text-zinc-500">No posts yet.</p>
+                <p class="text-zinc-600">No posts yet.</p>
             </div>
         `;
         return;
     }
     
     blogPostsContainer.innerHTML = `
-        <div class="space-y-0 divide-y divide-white/[0.08]">
+        <div class="space-y-0 divide-y divide-zinc-200">
             ${blogs.map(blog => `
-                <article class="cursor-pointer group py-3.5 sm:py-4 first:pt-0 active:bg-white/[0.02] sm:active:bg-transparent -mx-1 px-1 sm:mx-0 sm:px-0 rounded-lg sm:rounded-none" onclick="openBlog('${blog.id}')">
+                <article class="cursor-pointer group py-3.5 sm:py-4 first:pt-0 active:bg-zinc-100 sm:active:bg-transparent -mx-1 px-1 sm:mx-0 sm:px-0 rounded-lg sm:rounded-none" onclick="openBlog('${blog.id}')">
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 mb-1.5">
-                        <h4 class="text-[15px] sm:text-base font-semibold text-white sm:group-hover:text-emerald-400/90 transition-colors tracking-tight break-words pr-1">${blog.title}</h4>
-                        <span class="text-[11px] text-zinc-500 tabular-nums shrink-0">${blog.date}</span>
+                        <h4 class="text-[15px] sm:text-base font-semibold text-zinc-900 sm:group-hover:text-emerald-700 transition-colors tracking-tight break-words pr-1">${blog.title}</h4>
+                        <span class="text-[11px] text-zinc-600 tabular-nums shrink-0">${blog.date}</span>
                     </div>
-                    ${blog.subtitle ? `<p class="text-xs text-zinc-500 mb-2">${blog.subtitle}</p>` : ''}
-                    <p class="text-sm text-zinc-400 leading-snug line-clamp-3 mb-3">
+                    ${blog.subtitle ? `<p class="text-xs text-zinc-600 mb-2">${blog.subtitle}</p>` : ''}
+                    <p class="text-sm text-zinc-600 leading-snug line-clamp-3 mb-3">
                         ${blog.content.replace(/#+.+|```[\s\S]*?```|\$\$[\s\S]*?\$\$|\$.+?\$/g, '').substring(0, 200)}…
                     </p>
                     ${normalizeTags(blog.tags).length ? `
                         <div class="flex flex-wrap gap-2">
                             ${normalizeTags(blog.tags).map(tag => `
-                                <span class="text-[11px] font-medium text-zinc-500 px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06]">${tag}</span>
+                                <span class="text-[11px] font-medium text-zinc-600 px-2 py-0.5 rounded-md bg-zinc-100 border border-zinc-200">${tag}</span>
                             `).join('')}
                         </div>
                     ` : ''}
-                    <p class="text-[11px] font-medium text-accent-color mt-2 opacity-90 group-hover:opacity-100 transition-opacity">Read article →</p>
+                    <p class="text-[11px] font-medium text-emerald-700 mt-2 opacity-90 group-hover:opacity-100 transition-opacity">Read article →</p>
                 </article>
             `).join('')}
         </div>
@@ -201,30 +201,30 @@ async function openBlog(blogId) {
     
     // 创建博客详情模态框
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-4 bg-black/80 sm:bg-black/70 backdrop-blur-sm';
+    modal.className = 'fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-4 bg-zinc-900/40 sm:bg-zinc-900/35 backdrop-blur-sm';
     
     // 直接渲染markdown内容，包括公式
     const renderedContent = renderMathInMarkdown(blog.content);
     
     modal.innerHTML = `
-        <div class="bg-[#141414] border-0 sm:border border-white/[0.1] max-w-none sm:max-w-3xl w-full h-full sm:h-auto max-h-none sm:max-h-[90vh] min-h-0 overflow-y-auto overscroll-contain relative rounded-none sm:rounded-xl shadow-none sm:shadow-2xl sm:shadow-black/50" onclick="event.stopPropagation()">
-            <div class="sticky top-0 z-20 flex gap-3 items-start p-4 sm:p-5 md:p-6 border-b border-white/[0.08] bg-[#141414] backdrop-blur-sm">
+        <div class="bg-white border-0 sm:border border-zinc-200 max-w-none sm:max-w-3xl w-full h-full sm:h-auto max-h-none sm:max-h-[90vh] min-h-0 overflow-y-auto overscroll-contain relative rounded-none sm:rounded-xl shadow-none sm:shadow-xl sm:shadow-zinc-300/40" onclick="event.stopPropagation()">
+            <div class="sticky top-0 z-20 flex gap-3 items-start p-4 sm:p-5 md:p-6 border-b border-zinc-200 bg-white backdrop-blur-sm">
                 <div class="min-w-0 flex-1 space-y-2">
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-2">
-                        <h2 class="text-base sm:text-lg font-semibold text-white tracking-tight break-words">${blog.title}</h2>
-                        <span class="text-[11px] sm:text-xs text-zinc-500 tabular-nums shrink-0">${blog.date}</span>
+                        <h2 class="text-base sm:text-lg font-semibold text-zinc-900 tracking-tight break-words">${blog.title}</h2>
+                        <span class="text-[11px] sm:text-xs text-zinc-600 tabular-nums shrink-0">${blog.date}</span>
                     </div>
-                    ${blog.subtitle ? `<p class="text-xs text-zinc-500">${blog.subtitle}</p>` : ''}
+                    ${blog.subtitle ? `<p class="text-xs text-zinc-600">${blog.subtitle}</p>` : ''}
                     ${normalizeTags(blog.tags).length ? `
                         <div class="flex flex-wrap gap-2">
                             ${normalizeTags(blog.tags).map(tag => `
-                                <span class="text-[11px] font-medium text-zinc-400 px-2 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08]">${tag}</span>
+                                <span class="text-[11px] font-medium text-zinc-600 px-2 py-0.5 rounded-md bg-zinc-100 border border-zinc-200">${tag}</span>
                             `).join('')}
                         </div>
                     ` : ''}
                 </div>
                 <button type="button" onclick="this.closest('.fixed').remove()"
-                        class="shrink-0 -mr-1 text-zinc-500 hover:text-white transition-colors text-sm w-11 h-11 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg hover:bg-white/[0.06]" aria-label="Close">
+                        class="shrink-0 -mr-1 text-zinc-500 hover:text-zinc-900 transition-colors text-sm w-11 h-11 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg hover:bg-zinc-100" aria-label="Close">
                     ✕
                 </button>
             </div>
@@ -249,7 +249,7 @@ marked.use({
     breaks: true,
     gfm: true,
     highlight: function(code, lang) {
-        return `<pre class="bg-[#0a0a0a] p-4 border border-white/[0.1] overflow-x-auto text-sm rounded-lg"><code class="language-${lang || ''} text-zinc-300">${code}</code></pre>`;
+        return `<pre class="bg-zinc-900 p-4 border border-zinc-700 overflow-x-auto text-sm rounded-lg"><code class="language-${lang || ''} text-zinc-200">${code}</code></pre>`;
     }
 });
 
@@ -318,24 +318,24 @@ document.addEventListener('DOMContentLoaded', function() {
 const style = document.createElement('style');
 style.textContent = `
     .blog-content {
-        color: #acacbe;
+        color: #52525b;
         font-size: 0.875rem;
         line-height: 1.65;
     }
 
     .blog-content h1 {
-        color: #ececf1;
+        color: #18181b;
         font-size: 1.4rem;
         font-weight: 600;
         margin-bottom: 0.85rem;
         margin-top: 0;
         padding-bottom: 0.45rem;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid #e4e4e7;
         letter-spacing: -0.02em;
     }
 
     .blog-content h2 {
-        color: #ececf1;
+        color: #18181b;
         font-size: 1.1rem;
         font-weight: 600;
         margin-top: 1.35rem;
@@ -344,7 +344,7 @@ style.textContent = `
     }
 
     .blog-content h3 {
-        color: #d4d4d8;
+        color: #3f3f46;
         font-size: 1rem;
         font-weight: 600;
         margin-top: 1.1rem;
@@ -356,20 +356,20 @@ style.textContent = `
     }
 
     .blog-content a {
-        color: #10a37f;
+        color: #0d9f7a;
         text-decoration: none;
-        border-bottom: 1px solid rgba(16, 163, 127, 0.35);
+        border-bottom: 1px solid rgba(13, 159, 122, 0.35);
         transition: color 0.15s, border-color 0.15s;
     }
 
     .blog-content a:hover {
-        color: #12b886;
-        border-bottom-color: rgba(18, 184, 134, 0.6);
+        color: #0a7a5e;
+        border-bottom-color: rgba(10, 122, 94, 0.55);
     }
 
     .blog-content .katex,
     .blog-content .katex * {
-        color: #ececf1 !important;
+        color: #18181b !important;
     }
 
     .blog-content img {
@@ -377,7 +377,7 @@ style.textContent = `
         height: auto;
         display: block;
         margin: 1.5rem 0;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid #e4e4e7;
         border-radius: 8px;
     }
 
@@ -392,44 +392,44 @@ style.textContent = `
     }
 
     .blog-content li::marker {
-        color: #6e6e80;
+        color: #71717a;
     }
 
     .blog-content code {
-        background-color: rgba(255,255,255,0.06);
-        color: #ececf1;
+        background-color: #f4f4f5;
+        color: #18181b;
         padding: 0.15rem 0.4rem;
         border-radius: 4px;
         font-size: 0.875em;
-        border: 1px solid rgba(255,255,255,0.08);
+        border: 1px solid #e4e4e7;
     }
 
     .blog-content pre {
-        background-color: #0a0a0a;
+        background-color: #18181b;
         padding: 1rem;
         border-radius: 8px;
         margin-bottom: 1rem;
         overflow-x: auto;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid #3f3f46;
     }
 
     .blog-content pre code {
         background: none;
         padding: 0;
         border: none;
-        color: #d4d4d8;
+        color: #e4e4e7;
     }
 
     .blog-content blockquote {
-        border-left: 3px solid rgba(16, 163, 127, 0.45);
+        border-left: 3px solid rgba(13, 159, 122, 0.5);
         padding-left: 1rem;
         margin: 1rem 0;
-        color: #8e8ea0;
+        color: #71717a;
     }
 
     .blog-content hr {
         border: none;
-        border-top: 1px solid rgba(255,255,255,0.1);
+        border-top: 1px solid #e4e4e7;
         margin: 1.35rem 0;
     }
 
@@ -441,22 +441,22 @@ style.textContent = `
     }
 
     .blog-content th {
-        background-color: rgba(255,255,255,0.04);
-        color: #ececf1;
+        background-color: #f4f4f5;
+        color: #18181b;
         font-weight: 600;
         padding: 0.5rem 0.75rem;
         text-align: left;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid #e4e4e7;
     }
 
     .blog-content td {
         padding: 0.5rem 0.75rem;
-        border: 1px solid rgba(255,255,255,0.08);
-        color: #acacbe;
+        border: 1px solid #e4e4e7;
+        color: #52525b;
     }
 
     .blog-content tr:nth-child(even) {
-        background-color: rgba(255,255,255,0.02);
+        background-color: #fafafa;
     }
 
     .line-clamp-3 {

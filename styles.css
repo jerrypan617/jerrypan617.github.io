@@ -1,25 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    --bg-primary: #0a0a0a;
-    --bg-secondary: #101010;
-    --bg-elevated: #161616;
-    --text-primary: #ececf1;
-    --text-secondary: #acacbe;
-    --text-tertiary: #6e6e80;
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.12);
-    --accent-color: #10a37f;
-    --hover-bg: rgba(255, 255, 255, 0.06);
+    --bg-primary: #ffffff;
+    --bg-secondary: #f4f4f5;
+    --bg-elevated: #ffffff;
+    --text-primary: #18181b;
+    --text-secondary: #52525b;
+    --text-tertiary: #71717a;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --border-strong: rgba(0, 0, 0, 0.14);
+    --accent-color: #0d9f7a;
+    --hover-bg: rgba(0, 0, 0, 0.05);
     --transition-speed: 0.2s;
 }
 
 html {
-    color-scheme: dark;
+    color-scheme: light;
 }
 
 body {
-    background-color: #040508;
+    background-color: #ffffff;
     color: var(--text-primary);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.55;
@@ -29,70 +29,10 @@ body {
     min-height: 100vh;
 }
 
-/* Starfield — GPU-friendly: animate transform, not background-position (avoids stepped repaints) */
+/* 浅色页不使用星空层 */
 body::before,
 body::after {
-    content: '';
-    position: fixed;
-    /* Oversized so translating by one tile period never exposes empty edges */
-    inset: -360px;
-    z-index: 0;
-    pointer-events: none;
-    backface-visibility: hidden;
-    will-change: transform;
-}
-
-body::before {
-    opacity: 0.95;
-    background-image:
-        radial-gradient(1px 1px at 18% 22%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(1px 1px at 62% 38%, rgba(255, 255, 255, 0.45), transparent),
-        radial-gradient(1.5px 1.5px at 44% 71%, rgba(255, 255, 255, 0.75), transparent),
-        radial-gradient(1px 1px at 88% 12%, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 8% 84%, rgba(255, 255, 255, 0.55), transparent),
-        radial-gradient(1px 1px at 76% 88%, rgba(255, 255, 255, 0.35), transparent);
-    background-size: 200px 200px;
-    background-repeat: repeat;
-    animation: starfield-drift-a 220s linear infinite;
-}
-
-body::after {
-    opacity: 0.85;
-    background-image:
-        radial-gradient(1.5px 1.5px at 28% 48%, rgba(255, 255, 255, 0.65), transparent),
-        radial-gradient(1px 1px at 72% 18%, rgba(255, 255, 255, 0.4), transparent),
-        radial-gradient(1px 1px at 52% 82%, rgba(255, 255, 255, 0.85), transparent),
-        radial-gradient(1px 1px at 12% 56%, rgba(255, 255, 255, 0.3), transparent);
-    background-size: 280px 280px;
-    background-repeat: repeat;
-    animation: starfield-drift-b 320s linear infinite reverse;
-}
-
-@keyframes starfield-drift-a {
-    from {
-        transform: translate3d(0, 0, 0);
-    }
-    to {
-        transform: translate3d(-200px, -200px, 0);
-    }
-}
-
-@keyframes starfield-drift-b {
-    from {
-        transform: translate3d(0, 0, 0);
-    }
-    to {
-        transform: translate3d(-280px, -280px, 0);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    body::before,
-    body::after {
-        animation: none;
-        transform: none;
-        will-change: auto;
-    }
+    display: none;
 }
 
 body > .page-shell {
@@ -122,22 +62,22 @@ body > .page-shell {
 }
 
 ::selection {
-    background-color: rgba(16, 163, 127, 0.35);
-    color: #fff;
+    background-color: rgba(16, 163, 127, 0.22);
+    color: #18181b;
 }
 
 ::-webkit-scrollbar {
     width: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.15);
     border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.25);
 }
 
 @keyframes fadeIn {
@@ -165,16 +105,17 @@ body > .page-shell {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 1.1rem 1.25rem;
-    background: rgba(22, 22, 22, 0.65);
-    backdrop-filter: blur(8px);
+    background: #ffffff;
+    backdrop-filter: none;
     transition: border-color var(--transition-speed) ease, background var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 @media (hover: hover) and (pointer: fine) {
     .card:hover {
         border-color: var(--border-strong);
-        background: rgba(24, 24, 24, 0.85);
-        box-shadow: 0 0 0 1px rgba(16, 163, 127, 0.12);
+        background: #fafafa;
+        box-shadow: 0 0 0 1px rgba(16, 163, 127, 0.18), 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 }
 
@@ -189,7 +130,7 @@ body > .page-shell {
     font-weight: 500;
     padding: 0.28rem 0.65rem;
     border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(0, 0, 0, 0.04);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
     transition: background var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
@@ -197,7 +138,7 @@ body > .page-shell {
 
 .pill:hover {
     background: var(--hover-bg);
-    border-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(0, 0, 0, 0.14);
     color: var(--text-primary);
 }
 

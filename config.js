@@ -74,21 +74,29 @@ const siteConfig = {
     projects: [
         {
             type: "RESEARCH",
-            name: "AFDNet",
-            subtitle: "Visual Algorithms for Single Image Rain Removal",
-            description: "Developed deep learning algorithms to effectively remove visual degradation features caused by rain, enhancing vision systems.",
-            technologies: ["Python", "MindSpore", "OpenCV"],
+            paperTitle:
+                "Adaptive Feature extraction and Deformable Sampling Network for Rain Removal",
+            authors: [
+                { name: "X. Pan" },
+                { name: "Y. Yu", corresponding: true },
+                { name: "Y. Liang" },
+                { name: "J. Yi" },
+                { name: "Q. Lu" },
+            ],
             github: "https://github.com/jerrypan617/DerainUNet-MindSpore",
-            paper: ""
+            paper: "",
         },
         {
             type: "RESEARCH",
-            name: "CF-CAM",
-            subtitle: "Gradient Perturbation Mitigation",
-            description: "Improved gradient-based CAM algorithms by mitigating noise through clustering and filtering, significantly enhancing deep learning model interpretability.",
-            technologies: ["Python", "PyTorch", "OpenCV"],
+            paperTitle:
+                "CF-CAM: Cluster Filter Class Activation Mapping for Reliable Gradient-Based Interpretability",
+            authors: [
+                { name: "X. Pan", coFirst: true },
+                { name: "H. He", coFirst: true },
+                { name: "Y. Yao", corresponding: true },
+            ],
             github: "https://github.com/jerrypan617/CF-CAM",
-            paper: "https://arxiv.org/abs/2504.00060"
+            paper: "https://arxiv.org/abs/2504.00060",
         },
         {
             type: "PROJECT",

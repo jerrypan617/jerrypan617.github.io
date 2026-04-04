@@ -1,14 +1,14 @@
-// Tailwind CSS Configuration — OpenAI / Grok–style dark product UI
+// Tailwind CSS Configuration — light UI
 tailwind.config = {
     darkMode: 'class',
     theme: {
         extend: {
             colors: {
-                'accent-color': '#10a37f',
+                'accent-color': '#0d9f7a',
                 surface: {
-                    DEFAULT: '#0a0a0a',
-                    raised: '#141414',
-                    overlay: '#1a1a1a',
+                    DEFAULT: '#ffffff',
+                    raised: '#fafafa',
+                    overlay: '#f4f4f5',
                 },
             },
             fontFamily: {

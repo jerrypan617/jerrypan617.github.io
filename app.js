@@ -9,20 +9,20 @@ function renderHeader() {
     const onBlogPage = /blog\.html$/i.test(path);
     /* 一寸证件照比例 295×413（宽:高），网页上约 100–118px 宽，接近表格/简历贴照尺寸 */
     const avatarFrame =
-        'relative block shrink-0 overflow-hidden rounded-md border border-white/[0.14] bg-zinc-900/50 shadow-sm shadow-black/40 w-[92px] sm:w-[100px] md:w-[110px] lg:w-[118px] aspect-[295/413] mx-auto sm:mx-0';
+        'relative block shrink-0 overflow-hidden rounded-md border border-zinc-200 bg-zinc-100 shadow-sm shadow-zinc-200/80 w-[92px] sm:w-[100px] md:w-[110px] lg:w-[118px] aspect-[295/413] mx-auto sm:mx-0';
     const avatarBlock = personal.photo
         ? `<span class="${avatarFrame}">
                 <img src="${personal.photo}" alt="${displayName}" width="295" height="413" decoding="async" class="absolute inset-0 h-full w-full object-cover object-top" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden')" />
-                <span class="hidden absolute inset-0 bg-white/[0.06] flex items-center justify-center text-white font-semibold text-sm tracking-tight" aria-hidden="true">XP</span>
+                <span class="hidden absolute inset-0 bg-zinc-200/80 flex items-center justify-center text-zinc-600 font-semibold text-sm tracking-tight" aria-hidden="true">XP</span>
            </span>`
-        : `<div class="${avatarFrame} flex items-center justify-center text-white font-semibold text-sm tracking-tight">XP</div>`;
+        : `<div class="${avatarFrame} flex items-center justify-center text-zinc-600 font-semibold text-sm tracking-tight">XP</div>`;
 
     header.innerHTML = `
         <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 md:gap-6 items-center sm:items-start text-center sm:text-left fade-in staggered-1">
             ${avatarBlock}
             <div class="flex flex-col gap-2 sm:gap-2.5 min-w-0 flex-1 w-full sm:w-auto pt-0 sm:pt-0.5">
-                <h1 class="text-[1.625rem] sm:text-3xl md:text-[2.25rem] lg:text-[2.5rem] font-semibold text-white tracking-[-0.03em] leading-[1.15] sm:leading-tight">
-                    <a href="index.html" class="hover:text-white/80 transition-colors">${displayName}</a>
+                <h1 class="text-[1.625rem] sm:text-3xl md:text-[2.25rem] lg:text-[2.5rem] font-semibold text-zinc-900 tracking-[-0.03em] leading-[1.15] sm:leading-tight">
+                    <a href="index.html" class="hover:text-zinc-600 transition-colors">${displayName}</a>
                 </h1>
                 <p class="text-[10px] sm:text-[11px] font-medium tracking-[0.12em] uppercase text-zinc-500">
                     ${personal.bootMessage}
@@ -42,7 +42,7 @@ function renderHeader() {
 
             <nav class="flex flex-wrap gap-2 sm:gap-1.5 pt-1 justify-center sm:justify-start" aria-label="${onBlogPage ? 'Site navigation' : 'Social links'}">
                 ${onBlogPage ? `
-                <a href="index.html" class="pill inline-flex items-center justify-center gap-2 no-underline max-sm:min-h-[44px] max-sm:px-3.5 max-sm:py-2.5 border-emerald-500/25 bg-emerald-500/5 text-emerald-400/95 hover:border-emerald-500/40">
+                <a href="index.html" class="pill inline-flex items-center justify-center gap-2 no-underline max-sm:min-h-[44px] max-sm:px-3.5 max-sm:py-2.5 border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-300">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     Home
                 </a>
@@ -94,10 +94,10 @@ function renderProfile() {
                                 ` : ''}
                                 <div class="min-w-0 flex-1 flex flex-col gap-1">
                                     <div class="flex items-start justify-between gap-2 sm:gap-3">
-                                        <h4 class="text-white font-semibold text-[15px] sm:text-base tracking-tight leading-snug min-w-0 flex-1">${title}</h4>
-                                        <span class="text-[10px] font-medium text-zinc-500 tabular-nums shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">${edu.period}</span>
+                                        <h4 class="text-zinc-900 font-semibold text-[15px] sm:text-base tracking-tight leading-snug min-w-0 flex-1">${title}</h4>
+                                        <span class="text-[10px] font-medium text-zinc-600 tabular-nums shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full bg-zinc-100 border border-zinc-200">${edu.period}</span>
                                     </div>
-                                    <p class="text-zinc-400 text-sm font-medium break-words">${institution}</p>
+                                    <p class="text-zinc-600 text-sm font-medium break-words">${institution}</p>
                                     ${edu.unit ? `<p class="text-zinc-500 text-xs sm:text-sm break-words">${edu.unit}</p>` : ''}
                                     ${edu.location ? `<p class="text-zinc-600 text-[11px] sm:text-xs flex items-start gap-1.5 min-w-0">
                                         <svg class="w-3.5 h-3.5 shrink-0 text-zinc-500 mt-px" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -137,23 +137,105 @@ function renderSkills() {
             <div class="flex flex-col gap-2 sm:col-span-2 lg:col-span-1 min-w-0">
                 <h4 class="text-[10px] font-semibold text-zinc-500 uppercase tracking-[0.18em]">Research domains</h4>
                 <div class="flex flex-wrap gap-1.5">
-                    ${skills.domains.map(domain => `<span class="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400/95 border border-emerald-500/20 cursor-default">${domain}</span>`).join('')}
+                    ${skills.domains.map(domain => `<span class="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 cursor-default">${domain}</span>`).join('')}
                 </div>
             </div>
         </div>
     `;
 }
 
-// 渲染 Projects 部分
+// 渲染 Research（#research）与 Projects（#projects）两个区块
 function renderProjects() {
+    const researchContainer = document.getElementById('research');
     const projectsContainer = document.getElementById('projects');
-    if (!projectsContainer) return;
+    if (!researchContainer && !projectsContainer) return;
 
     const { projects } = siteConfig;
+    const research = projects.filter((p) => (p.type || '').toUpperCase() === 'RESEARCH');
+    const projectItems = projects.filter((p) => (p.type || '').toUpperCase() !== 'RESEARCH');
 
-    projectsContainer.innerHTML = `
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-5 fade-in staggered-4">
-            ${projects.map((project) => `
+    const techSpans = (project) =>
+        project.technologies
+            .map(
+                (tech) =>
+                    `<span class="text-[10px] font-medium text-zinc-600 px-2 py-0.5 rounded-md bg-zinc-100 border border-zinc-200">${tech}</span>`
+            )
+            .join('');
+
+    const formatResearchAuthorLine = (authors) => {
+        if (!authors || !Array.isArray(authors)) return "";
+        return authors
+            .map((a) => {
+                const name = typeof a === "string" ? a : a.name;
+                let marks = "";
+                if (a.coFirst) {
+                    marks += '<sup class="text-emerald-700 font-medium ml-px">†</sup>';
+                }
+                if (a.corresponding) {
+                    marks += '<sup class="text-emerald-700 font-medium ml-px">*</sup>';
+                }
+                return name + marks;
+            })
+            .join(", ");
+    };
+
+    const projectLinks = (project) =>
+        (project.github || project.paper)
+            ? `
+                        <div class="flex flex-wrap gap-3 sm:gap-4 shrink-0">
+                            ${project.github ? `
+                                <a href="${project.github}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-zinc-500 hover:text-accent-color transition-colors inline-flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                                    GitHub
+                                </a>
+                            ` : ''}
+                            ${project.paper ? `
+                                <a href="${project.paper}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-zinc-500 hover:text-accent-color transition-colors inline-flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                                    Paper
+                                </a>
+                            ` : ''}
+                        </div>
+                    `
+            : '';
+
+    const researchRows = research
+        .map((project) => {
+            const isPaperStyle = project.paperTitle && project.authors;
+            if (isPaperStyle) {
+                return `
+                <article class="rounded-lg border border-zinc-200 bg-zinc-50 px-3.5 py-3 sm:px-4 sm:py-3.5 min-w-0 transition-colors sm:hover:border-emerald-300/60 sm:hover:bg-zinc-100/80">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                        <div class="min-w-0 flex-1 space-y-1">
+                            <h4 class="text-[15px] sm:text-base font-semibold text-zinc-900 tracking-tight leading-snug">${project.paperTitle}</h4>
+                            <p class="text-sm text-zinc-600 leading-relaxed pt-1">${formatResearchAuthorLine(project.authors)}</p>
+                        </div>
+                        <div class="shrink-0 sm:pt-0.5">${projectLinks(project)}</div>
+                    </div>
+                </article>
+            `;
+            }
+            return `
+                <article class="rounded-lg border border-zinc-200 bg-zinc-50 px-3.5 py-3 sm:px-4 sm:py-3.5 min-w-0 transition-colors sm:hover:border-emerald-300/60 sm:hover:bg-zinc-100/80">
+                    <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-6">
+                        <div class="min-w-0 flex-1 space-y-1">
+                            <h4 class="text-[15px] sm:text-base font-semibold text-zinc-900 tracking-tight break-words">${project.name}</h4>
+                            ${project.subtitle ? `<p class="text-sm font-medium text-zinc-600">${project.subtitle}</p>` : ''}
+                            <p class="text-sm text-zinc-600 leading-relaxed">${project.description}</p>
+                        </div>
+                        <div class="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center lg:flex-col lg:items-end xl:flex-row xl:items-center shrink-0 lg:pt-0.5">
+                            <div class="flex flex-wrap gap-1.5">${techSpans(project)}</div>
+                            ${projectLinks(project)}
+                        </div>
+                    </div>
+                </article>
+            `;
+        })
+        .join('');
+
+    const projectCards = projectItems
+        .map(
+            (project) => `
                 <article class="card group relative overflow-hidden flex flex-col gap-2.5 sm:gap-3 min-w-0">
                     <div class="hidden lg:block absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 pointer-events-none">
                         <svg class="w-5 h-5 text-accent-color" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,20 +245,20 @@ function renderProjects() {
                     
                     <div class="flex flex-col gap-1">
                         <span class="text-[9px] font-semibold uppercase tracking-[0.2em] text-accent-color">${project.type}</span>
-                        <h4 class="text-base sm:text-lg lg:text-[1.125rem] xl:text-xl font-semibold text-white tracking-tight break-words">${project.name}</h4>
-                        ${project.subtitle ? `<p class="text-sm font-medium text-zinc-500">${project.subtitle}</p>` : ''}
+                        <h4 class="text-base sm:text-lg lg:text-[1.125rem] xl:text-xl font-semibold text-zinc-900 tracking-tight break-words">${project.name}</h4>
+                        ${project.subtitle ? `<p class="text-sm font-medium text-zinc-600">${project.subtitle}</p>` : ''}
                     </div>
 
-                    <p class="text-sm text-zinc-400 leading-relaxed">
+                    <p class="text-sm text-zinc-600 leading-relaxed">
                         ${project.description}
                     </p>
 
                     <div class="flex flex-wrap gap-1.5">
-                        ${project.technologies.map(tech => `<span class="text-[10px] font-medium text-zinc-400 px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08]">${tech}</span>`).join('')}
+                        ${techSpans(project)}
                     </div>
 
                     ${(project.github || project.paper) ? `
-                        <div class="flex flex-wrap gap-4 pt-2.5 border-t border-white/[0.08]">
+                        <div class="flex flex-wrap gap-4 pt-2.5 border-t border-zinc-200">
                             ${project.github ? `
                                 <a href="${project.github}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-zinc-500 hover:text-accent-color transition-colors inline-flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -192,9 +274,20 @@ function renderProjects() {
                         </div>
                     ` : ''}
                 </article>
-            `).join('')}
-        </div>
-    `;
+            `
+        )
+        .join('');
+
+    if (researchContainer) {
+        researchContainer.innerHTML = research.length
+            ? `<div class="flex flex-col gap-2 sm:gap-2.5 fade-in staggered-4">${researchRows}</div>`
+            : '';
+    }
+    if (projectsContainer) {
+        projectsContainer.innerHTML = projectItems.length
+            ? `<div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-5 fade-in staggered-4">${projectCards}</div>`
+            : '';
+    }
 }
 
 // 渲染 Achievements 部分
@@ -207,12 +300,12 @@ function renderAchievements() {
     achievementsContainer.innerHTML = `
         <div class="grid gap-2 sm:gap-2.5 fade-in staggered-5">
             ${achievements.map(achievement => `
-                <div class="flex flex-row items-start justify-between gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-md sm:rounded-lg bg-white/[0.03] border border-white/[0.08] max-sm:active:bg-white/[0.05] sm:hover:border-emerald-500/35 sm:hover:bg-white/[0.04] transition-all min-w-0">
+                <div class="flex flex-row items-start justify-between gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-md sm:rounded-lg bg-zinc-50 border border-zinc-200 max-sm:active:bg-zinc-100 sm:hover:border-emerald-300/50 sm:hover:bg-zinc-100/80 transition-all min-w-0">
                     <div class="flex flex-col gap-0 min-w-0 flex-1 pr-1">
-                        <span class="text-[13px] sm:text-sm font-semibold text-white break-words">${achievement.title}</span>
-                        ${achievement.subtitle ? `<span class="text-xs font-medium text-zinc-500">${achievement.subtitle}</span>` : ''}
+                        <span class="text-[13px] sm:text-sm font-semibold text-zinc-900 break-words">${achievement.title}</span>
+                        ${achievement.subtitle ? `<span class="text-xs font-medium text-zinc-600">${achievement.subtitle}</span>` : ''}
                     </div>
-                    <span class="text-[11px] font-medium tabular-nums text-zinc-500 shrink-0 whitespace-nowrap text-right self-start px-2.5 py-1 rounded-md bg-white/[0.05] border border-white/[0.06]">${achievement.date}</span>
+                    <span class="text-[11px] font-medium tabular-nums text-zinc-600 shrink-0 whitespace-nowrap text-right self-start px-2.5 py-1 rounded-md bg-zinc-100 border border-zinc-200">${achievement.date}</span>
                 </div>
             `).join('')}
         </div>
@@ -230,8 +323,8 @@ function renderFooter() {
         <div class="pt-3 sm:pt-4 flex flex-col items-center gap-2 text-zinc-500">
             <div class="flex gap-2 items-center">
                 <span class="w-1.5 h-1.5 rounded-full bg-accent-color shadow-[0_0_12px_rgba(16,163,127,0.5)]"></span>
-                <span class="w-1 h-1 rounded-full bg-zinc-600"></span>
-                <span class="w-1 h-1 rounded-full bg-zinc-700"></span>
+                <span class="w-1 h-1 rounded-full bg-zinc-400"></span>
+                <span class="w-1 h-1 rounded-full bg-zinc-300"></span>
             </div>
             <div class="flex flex-col items-center gap-1">
                 <p class="text-[11px] font-medium tracking-[0.12em] uppercase text-zinc-500">${footerData.systemId}</p>
@@ -250,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('skills')) {
         renderSkills();
     }
-    if (document.getElementById('projects')) {
+    if (document.getElementById('research') || document.getElementById('projects')) {
         renderProjects();
     }
     if (document.getElementById('achievements')) {
