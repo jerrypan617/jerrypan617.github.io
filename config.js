@@ -21,6 +21,7 @@ const siteConfig = {
         bootMessage: "Computer science · Xi'an Jiaotong University",
         photo: "resources/my_face.jpg",
         social: {
+            github: "https://github.com/jerrypan617",
             googleScholar: "https://scholar.google.com/citations?user=lSA9xFoAAAAJ&hl=zh-CN",
             huggingface: "https://huggingface.co/JERRYPAN617",
             reddit: "https://www.reddit.com/user/Background-Pilot-288/"
@@ -48,20 +49,8 @@ const siteConfig = {
         ]
     },
 
+    /** 研究兴趣标签（页面展示为 Research interests） */
     skills: {
-        programming: [
-            "Python",
-            "C++",
-            "C",
-            "x86 Assembly"
-        ],
-        frameworks: [
-            "PyTorch",
-            "OpenCV",
-            "Numpy",
-            "Transformers",
-            "TRL"
-        ],
         domains: [
             "Latent Reasoning",
             "LLM Memory",

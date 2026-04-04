@@ -31,50 +31,52 @@
 </head>
 <body class="font-sans antialiased min-h-screen text-zinc-900 selection:bg-emerald-200/80 selection:text-zinc-900 [text-size-adjust:100%]">
 
-    <div class="page-shell relative z-10 w-full max-w-[min(100%,42rem)] md:max-w-3xl lg:max-w-[52rem] xl:max-w-[56rem] mx-auto px-4 sm:px-6 lg:px-10 py-7 sm:py-9 md:py-10 lg:py-11">
+    <div class="page-shell relative z-10 w-full max-w-[min(100%,80rem)] mx-auto px-4 sm:px-6 lg:px-10 py-7 sm:py-9 md:py-10 lg:py-11 flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12 xl:gap-14">
 
-        <header id="header" class="border-b border-zinc-200 pb-4 sm:pb-5">
-        </header>
+        <aside id="sidebar" class="w-full lg:w-[15rem] xl:w-64 shrink-0 lg:sticky lg:top-8 lg:max-h-[calc(100vh-2.5rem)] lg:overflow-y-auto overflow-x-hidden min-w-0 pb-1 lg:pb-2" aria-label="Profile and site navigation">
+        </aside>
 
-        <div class="divide-y divide-zinc-200">
-            <section class="py-3.5 sm:py-4">
-                <h3 class="section-title">
-                    About
-                </h3>
-                <div id="profile"></div>
-            </section>
+        <div class="flex-1 min-w-0 flex flex-col border-t border-zinc-200 lg:border-t-0 lg:border-l lg:border-zinc-200 lg:pl-10 xl:pl-12 pt-6 lg:pt-0">
+            <div class="divide-y divide-zinc-200">
+                <section id="section-about" class="py-3.5 sm:py-4 scroll-mt-24">
+                    <h3 class="section-title">
+                        About
+                    </h3>
+                    <div id="profile"></div>
+                </section>
 
-            <section class="py-3.5 sm:py-4">
-                <h3 class="section-title">
-                    Skills
-                </h3>
-                <div id="skills"></div>
-            </section>
+                <section id="section-research-interests" class="py-3.5 sm:py-4 scroll-mt-24">
+                    <h3 class="section-title">
+                        Research interests
+                    </h3>
+                    <div id="research-interests"></div>
+                </section>
 
-            <section class="py-3.5 sm:py-4">
-                <h3 class="section-title">
-                    Research
-                </h3>
-                <div id="research"></div>
-            </section>
+                <section id="section-research" class="py-3.5 sm:py-4 scroll-mt-24">
+                    <h3 class="section-title">
+                        Research
+                    </h3>
+                    <div id="research"></div>
+                </section>
 
-            <section class="py-3.5 sm:py-4">
-                <h3 class="section-title">
-                    Projects
-                </h3>
-                <div id="projects"></div>
-            </section>
+                <section id="section-projects" class="py-3.5 sm:py-4 scroll-mt-24">
+                    <h3 class="section-title">
+                        Projects
+                    </h3>
+                    <div id="projects"></div>
+                </section>
 
-            <section class="py-3.5 sm:py-4">
-                <h3 class="section-title">
-                    Achievements
-                </h3>
-                <div id="achievements"></div>
-            </section>
+                <section id="section-achievements" class="py-3.5 sm:py-4 scroll-mt-24">
+                    <h3 class="section-title">
+                        Achievements
+                    </h3>
+                    <div id="achievements"></div>
+                </section>
+            </div>
+
+            <footer id="footer" class="text-center border-t border-zinc-200 pt-4 sm:pt-5 mt-0">
+            </footer>
         </div>
-
-        <footer id="footer" class="text-center border-t border-zinc-200 pt-4 sm:pt-5">
-        </footer>
     </div>
 
     <script src="app.js"></script>
