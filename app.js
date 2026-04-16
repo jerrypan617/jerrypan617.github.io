@@ -36,7 +36,7 @@ function renderHeader() {
     const quickNavTitle = onBlogPage ? 'Navigate' : 'On this page';
 
     const quickNavHtml = `
-            <nav class="w-full min-w-0 max-w-full pt-4 mt-1 border-t border-zinc-200 overflow-x-hidden" aria-label="Quick navigation">
+            <nav class="hidden lg:block w-full min-w-0 max-w-full pt-4 mt-1 border-t border-zinc-200 overflow-x-hidden" aria-label="Quick navigation">
                 <p class="text-[10px] font-semibold text-zinc-500 uppercase tracking-[0.12em] mb-2 text-center lg:text-left">${quickNavTitle}</p>
                 <ul class="flex flex-col gap-0.5 text-sm min-w-0">
                     ${navLinks
