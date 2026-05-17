@@ -255,55 +255,39 @@ marked.use({
 
 // 自定义函数，直接渲染公式
 function renderMathInMarkdown(content) {
-    // 1. 首先使用marked解析markdown，但禁用breaks选项
-    // 这样不会将所有换行都转换为<br>标签
-    const html = marked.parse(content, {
-        breaks: false,  // 关键：禁用自动转换换行为<br>
-        gfm: true
+    // 1. 先用占位符保护 LaTeX 公式，避免 marked 把 _ 解析成 <em>
+    const placeholders = [];
+
+    // 保护块级公式 $$...$$
+    let protectedContent = content.replace(/\$\$([\s\S]*?)\$\$/g, (_, math) => {
+        const ph = `%%MATH_BLOCK_${placeholders.length}%%`;
+        placeholders.push({ type: 'block', content: math.trim(), ph });
+        return ph;
     });
-    
-    // 2. 处理块级公式
-    let finalHtml = html;
-    let blockMatch;
-    const blockRegex = /\$\$(.*?)\$\$/gs;
-    
-    while ((blockMatch = blockRegex.exec(finalHtml)) !== null) {
-        const original = blockMatch[0];
-        const mathContent = blockMatch[1].trim();
-        
+    // 保护行内公式 $...$
+    protectedContent = protectedContent.replace(/\$([^$\n]+?)\$/g, (_, math) => {
+        const ph = `%%MATH_INLINE_${placeholders.length}%%`;
+        placeholders.push({ type: 'inline', content: math.trim(), ph });
+        return ph;
+    });
+
+    // 2. marked 解析 markdown（此时 LaTeX 已是安全占位符）
+    let html = marked.parse(protectedContent, { breaks: false, gfm: true });
+
+    // 3. 将占位符替换为 KaTeX 渲染结果
+    for (const { type, content, ph } of placeholders) {
         try {
-            // 使用katex渲染块级公式
-            const rendered = katex.renderToString(mathContent, {
-                displayMode: true,
+            const rendered = katex.renderToString(content, {
+                displayMode: type === 'block',
                 throwOnError: false
             });
-            finalHtml = finalHtml.replace(original, rendered);
-        } catch (error) {
-            console.error('Error rendering block math:', error);
+            html = html.replace(ph, rendered);
+        } catch (err) {
+            console.error(`Error rendering ${type} math:`, err);
         }
     }
-    
-    // 3. 处理行内公式
-    let inlineMatch;
-    const inlineRegex = /\$(.*?)\$/g;
-    
-    while ((inlineMatch = inlineRegex.exec(finalHtml)) !== null) {
-        const original = inlineMatch[0];
-        const mathContent = inlineMatch[1].trim();
-        
-        try {
-            // 使用katex渲染行内公式
-            const rendered = katex.renderToString(mathContent, {
-                displayMode: false,
-                throwOnError: false
-            });
-            finalHtml = finalHtml.replace(original, rendered);
-        } catch (error) {
-            console.error('Error rendering inline math:', error);
-        }
-    }
-    
-    return finalHtml;
+
+    return html;
 }
 
 // 初始化：页面加载完成后渲染博客列表
