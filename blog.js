@@ -274,6 +274,11 @@ function renderMathInMarkdown(content) {
     // 2. marked 解析 markdown（此时 LaTeX 已是安全占位符）
     let html = marked.parse(protectedContent, { breaks: false, gfm: true });
 
+    // 修复图片路径：blog 内容渲染在页面根路径下，需补上 blogs/ 前缀
+    html = html.replace(/(<img[^>]+src=")(?!https?:\/\/|\/)([^"]+)"/gi, (_, prefix, path) => {
+        return `${prefix}blogs/${path}"`;
+    });
+
     // 3. 将占位符替换为 KaTeX 渲染结果
     for (const { type, content, ph } of placeholders) {
         try {
