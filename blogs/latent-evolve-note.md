@@ -7,7 +7,7 @@ tags: [LatentReasoning, TestTimeScaling]
 
 # LatentEvolve 笔记
 LatentEvolve: Self-Evolving Test Time Scaling in Latent Space (ICLR 2026)
-[https://openreview.net/forum?id=QTOYA4PFiJ](https://openreview.net/forum?id=QTOYA4PFiJ)
+[Link](https://openreview.net/forum?id=QTOYA4PFiJ)
 
 # 1. 概念
 
