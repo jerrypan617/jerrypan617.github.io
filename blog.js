@@ -177,9 +177,6 @@ async function renderBlogList() {
                         <span class="text-[11px] text-zinc-600 tabular-nums shrink-0">${blog.date}</span>
                     </div>
                     ${blog.subtitle ? `<p class="text-xs text-zinc-600 mb-2">${blog.subtitle}</p>` : ''}
-                    <p class="text-sm text-zinc-600 leading-snug line-clamp-3 mb-3">
-                        ${blog.content.replace(/^[\s\S]*?(?=## )/, '').replace(/#+.+|```[\s\S]*?```|\$\$[\s\S]*?\$\$|\$.+?\$/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').substring(0, 200)}…
-                    </p>
                     ${normalizeTags(blog.tags).length ? `
                         <div class="flex flex-wrap gap-2">
                             ${normalizeTags(blog.tags).map(tag => `
