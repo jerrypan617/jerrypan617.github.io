@@ -31,14 +31,20 @@ function renderHeader() {
               { href: '#section-blog', label: 'Blog' },
               ...sectionAnchors.map((s) => ({ href: `index.html#${s.id}`, label: s.label })),
           ]
-        : sectionAnchors.map((s) => ({ href: `#${s.id}`, label: s.label }));
+        : sectionAnchors.map((s) => ({
+              href: 'javascript:void(0)',
+              label: s.label,
+              sectionId: s.id,
+          }));
 
     const navHtml = (horizontal) => `
         <nav class="${horizontal ? 'flex lg:hidden' : 'hidden lg:flex'} w-full min-w-0" aria-label="Quick navigation">
             <div class="flex ${horizontal ? 'flex-row gap-1 overflow-x-auto py-1.5 -mx-1 px-1 scrollbar-none' : 'flex-col gap-0.5 pt-4 mt-1.5 border-t border-zinc-100/80'} w-full">
                 ${navLinks.map((l) => {
-                    const isCrossPage = l.href.includes('index.html');
-                    return `<a href="${l.href}"
+                    const isCrossPage = l.href && l.href.includes('index.html');
+                    const clickAttr = l.sectionId ? `onclick="scrollToSection('${l.sectionId}')"` : '';
+                    const dataAttr = l.sectionId ? `data-section="${l.sectionId}"` : '';
+                    return `<a href="${l.href}" ${clickAttr} ${dataAttr}
                         class="quick-nav-link text-zinc-500 hover:text-emerald-700 hover:bg-zinc-50/80 transition-all whitespace-nowrap
                             ${horizontal
                                 ? 'text-[11.5px] font-medium px-2.5 py-1.5 rounded-lg border border-transparent hover:border-zinc-100 shrink-0'
@@ -56,7 +62,7 @@ function renderHeader() {
             <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         </a>
         ` : `
-        <a href="blog.html" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="Blog" aria-label="Blog">
+        <a href="javascript:void(0)" onclick="switchToBlog()" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="Blog" aria-label="Blog">
             <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
         </a>
         `}
@@ -415,8 +421,7 @@ function observeReveal() {
                 if (entry.isIntersecting) activeId = entry.target.id;
             });
             navLinks.forEach((link) => {
-                const href = link.getAttribute('href') || '';
-                const targetId = href.replace(/.*#/, '');
+                const targetId = link.dataset.section || (link.getAttribute('href') || '').replace(/.*#/, '');
                 link.classList.toggle('active', targetId === activeId);
             });
         },
@@ -425,7 +430,43 @@ function observeReveal() {
     sections.forEach((s) => navObs.observe(s));
 }
 
+/* ── View switching (index.html 内切换 main / blog，侧边栏不重绘) ── */
+
+window.currentView = 'main'; // 'main' | 'blog'
+let blogInitialized = false;
+
+function switchToBlog() {
+    if (window.currentView === 'blog') return;
+    window.currentView = 'blog';
+    document.getElementById('main-content')?.classList.add('hidden');
+    document.getElementById('blog-content')?.classList.remove('hidden');
+    history.replaceState({ view: 'blog' }, '', window.location.pathname.replace(/\/$/, '') + '?view=blog');
+    window.scrollTo({ top: 0 });
+    if (!blogInitialized && typeof renderBlogList === 'function') {
+        blogInitialized = true;
+        renderBlogList().then(() => {
+            if (typeof observeReveal === 'function') observeReveal();
+        });
+    } else if (typeof observeReveal === 'function') {
+        observeReveal();
+    }
+}
+
+function scrollToSection(id) {
+    if (window.currentView === 'blog') {
+        window.currentView = 'main';
+        document.getElementById('main-content')?.classList.remove('hidden');
+        document.getElementById('blog-content')?.classList.add('hidden');
+        history.replaceState({ view: 'main' }, '', window.location.pathname);
+    }
+    requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    const isBlogPage = /blog\.html$/i.test(window.location.pathname);
+
     renderHeader();
 
     if (document.getElementById('profile')) {
@@ -439,6 +480,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     renderFooter();
 
-    // 滚动揭示动画
-    observeReveal();
+    // 仅 index.html 支持 view 切换
+    if (!isBlogPage) {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('view') === 'blog') {
+            switchToBlog();
+        } else {
+            observeReveal();
+        }
+    } else {
+        observeReveal();
+    }
 });

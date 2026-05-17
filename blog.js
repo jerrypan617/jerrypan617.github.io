@@ -305,12 +305,12 @@ function renderMathInMarkdown(content) {
     return html;
 }
 
-// 初始化：页面加载完成后渲染博客列表
+// 初始化：仅在独立 blog.html 页面时自动执行
 document.addEventListener('DOMContentLoaded', function() {
+    if (!/blog\.html$/i.test(window.location.pathname)) return;
     renderBlogList().then(() => {
         if (typeof observeReveal === 'function') observeReveal();
     });
-    // 确保header和footer也被渲染
     renderHeader();
     renderFooter();
 });
