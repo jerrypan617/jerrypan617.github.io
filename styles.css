@@ -205,22 +205,6 @@ a.pill {
     color: var(--accent-color);
 }
 
-/* 侧边栏响应式优化 */
-@media (max-width: 639px) {
-    #sidebar .pill {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.75rem;
-        border-radius: 10px;
-    }
-}
-
-@media (min-width: 1024px) {
-    #sidebar .pill {
-        font-size: 0.8125rem;
-        padding: 0.45rem 0.9rem;
-    }
-}
-
 .link-minimal span {
     position: relative;
 }
@@ -247,6 +231,15 @@ a.pill {
     background: rgba(13, 159, 122, 0.06);
     border-color: rgba(13, 159, 122, 0.15);
     font-weight: 550;
+}
+
+/* 隐藏滚动条（移动端横向导航） */
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
 }
 
 /* 桌面端 card 内联链接 hover */

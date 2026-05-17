@@ -9,14 +9,15 @@ function renderHeader() {
         typeof window !== 'undefined' && window.location.pathname ? window.location.pathname : '';
     const onBlogPage = /blog\.html$/i.test(path);
 
-    const avatarFrame =
-        'relative block shrink-0 overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-100 shadow-sm shadow-zinc-200/40 w-[6rem] sm:w-24 lg:w-28 aspect-[295/413] mx-auto lg:mx-0 transition-transform duration-300 hover:scale-[1.02]';
-    const avatarBlock = personal.photo
-        ? `<span class="${avatarFrame}">
-                <img src="${personal.photo}" alt="${displayName}" width="295" height="413" decoding="async" class="absolute inset-0 h-full w-full object-cover object-top" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden')" />
-                <span class="hidden absolute inset-0 bg-zinc-200/80 flex items-center justify-center text-zinc-600 font-semibold text-sm tracking-tight" aria-hidden="true">XP</span>
-           </span>`
-        : `<div class="${avatarFrame} flex items-center justify-center text-zinc-600 font-semibold text-sm tracking-tight">XP</div>`;
+    const avatarCompact =
+        'relative block shrink-0 overflow-hidden rounded-lg border border-zinc-200/60 bg-zinc-100 w-9 h-9 sm:w-10 sm:h-10';
+    const avatarFull =
+        'relative block shrink-0 overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-100 shadow-sm shadow-zinc-200/40 w-20 sm:w-24 aspect-[295/413] transition-transform duration-300 hover:scale-[1.02]';
+
+    const avatarImg = personal.photo
+        ? `<img src="${personal.photo}" alt="${displayName}" width="295" height="413" decoding="async" class="absolute inset-0 h-full w-full object-cover object-top" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden')" />
+           <span class="hidden absolute inset-0 bg-zinc-200/80 flex items-center justify-center text-zinc-600 font-semibold text-xs" aria-hidden="true">XP</span>`
+        : `<span class="absolute inset-0 flex items-center justify-center text-zinc-600 font-semibold text-xs">XP</span>`;
 
     const sectionAnchors = [
         { id: 'section-about', label: 'About' },
@@ -32,81 +33,102 @@ function renderHeader() {
           ]
         : sectionAnchors.map((s) => ({ href: `#${s.id}`, label: s.label }));
 
-    const quickNavTitle = onBlogPage ? 'Navigate' : 'On this page';
+    const navHtml = (horizontal) => `
+        <nav class="${horizontal ? 'flex lg:hidden' : 'hidden lg:flex'} w-full min-w-0" aria-label="Quick navigation">
+            <div class="flex ${horizontal ? 'flex-row gap-1 overflow-x-auto py-1.5 -mx-1 px-1 scrollbar-none' : 'flex-col gap-0.5 pt-4 mt-1.5 border-t border-zinc-100/80'} w-full">
+                ${navLinks.map((l) => {
+                    const isCrossPage = l.href.includes('index.html');
+                    return `<a href="${l.href}"
+                        class="quick-nav-link text-zinc-500 hover:text-emerald-700 hover:bg-zinc-50/80 transition-all whitespace-nowrap
+                            ${horizontal
+                                ? 'text-[11.5px] font-medium px-2.5 py-1.5 rounded-lg border border-transparent hover:border-zinc-100 shrink-0'
+                                : 'text-[12.5px] py-1.5 px-2.5 rounded-md border border-transparent hover:border-zinc-100/60'
+                            }
+                            ${isCrossPage ? 'text-zinc-400' : ''}">${l.label}</a>`;
+                }).join('')}
+            </div>
+        </nav>
+    `;
 
-    const quickNavHtml = `
-            <nav class="hidden lg:block w-full min-w-0 max-w-full pt-4 mt-1 border-t border-zinc-100/80 overflow-x-hidden" aria-label="Quick navigation">
-                <p class="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.12em] mb-2 text-center lg:text-left pl-1">${quickNavTitle}</p>
-                <ul class="flex flex-col gap-0.5 text-[12.5px] min-w-0">
-                    ${navLinks
-                        .map(
-                            (l) =>
-                                `<li class="min-w-0"><a href="${l.href}" class="text-zinc-500 hover:text-emerald-700 py-1 px-2 rounded-md hover:bg-zinc-50 transition-all block text-center lg:text-left break-words border border-transparent hover:border-zinc-100/50">${l.label}</a></li>`
-                        )
-                        .join('')}
-                </ul>
-            </nav>
-        `;
+    const socialIcons = `
+        ${onBlogPage ? `
+        <a href="index.html" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="Home" aria-label="Home">
+            <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </a>
+        ` : `
+        <a href="blog.html" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="Blog" aria-label="Blog">
+            <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+        </a>
+        `}
+        ${personal.social.github ? `
+            <a href="${personal.social.github}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="GitHub" aria-label="GitHub profile">
+                <svg class="w-[17px] h-[17px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+        ` : ''}
+        ${personal.social.googleScholar ? `
+            <a href="${personal.social.googleScholar}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="Google Scholar" aria-label="Google Scholar profile">
+                <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+            </a>
+        ` : ''}
+        ${personal.social.huggingface ? `
+            <a href="${personal.social.huggingface}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="HuggingFace" aria-label="HuggingFace profile">
+                <span style="font-size:17px;line-height:1">🤗</span>
+            </a>
+        ` : ''}
+    `;
 
     sidebar.innerHTML = `
-        <div class="flex flex-col items-center lg:items-stretch text-center lg:text-left gap-3 sm:gap-4 lg:gap-4 min-w-0 max-w-full overflow-x-hidden">
-            ${avatarBlock}
-            <div class="flex flex-col gap-2.5 sm:gap-3 lg:gap-3 min-w-0 w-full max-w-full overflow-x-hidden pt-0.5">
-                <div class="space-y-1">
-                    <h1 class="text-lg sm:text-xl lg:text-[1.35rem] font-bold text-zinc-900 tracking-[-0.03em] leading-tight">
+        <!-- ===== Mobile layout (< lg) ===== -->
+        <div class="flex flex-col lg:hidden">
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                    <span class="${avatarCompact}">${avatarImg}</span>
+                    <div class="min-w-0">
+                        <a href="index.html" class="text-sm font-bold text-zinc-900 tracking-tight hover:text-zinc-600 transition-colors">${displayName}</a>
+                        ${personal.bootMessage ? `<p class="text-[9px] font-semibold tracking-[0.12em] uppercase text-zinc-400 mt-0.5">${personal.bootMessage}</p>` : ''}
+                    </div>
+                </div>
+                <div class="flex items-center gap-0.5 shrink-0 -mr-1.5">
+                    ${socialIcons}
+                </div>
+            </div>
+            ${navHtml(true)}
+        </div>
+
+        <!-- ===== Desktop layout (lg+) ===== -->
+        <div class="hidden lg:flex flex-col items-stretch text-left gap-4 min-w-0 max-w-full">
+            <div class="flex flex-col items-start gap-3">
+                <span class="${avatarFull}">${avatarImg}</span>
+                <div class="space-y-1.5 w-full">
+                    <h1 class="text-[1.35rem] font-bold text-zinc-900 tracking-[-0.03em] leading-tight">
                         <a href="index.html" class="hover:text-zinc-600 transition-colors">${displayName}</a>
                     </h1>
                     ${personal.bootMessage ? `
-                    <p class="text-[10px] sm:text-[11px] lg:text-[11px] font-semibold tracking-[0.1em] uppercase text-zinc-400 leading-snug">
-                        ${personal.bootMessage}
-                    </p>
+                    <p class="text-[11px] font-semibold tracking-[0.1em] uppercase text-zinc-400 leading-snug">${personal.bootMessage}</p>
                     ` : ''}
                 </div>
-
-                <div class="flex flex-col gap-1.5 sm:gap-2 lg:gap-2 text-[12.5px] sm:text-sm lg:text-[13px] w-full pt-0.5">
-                    <a href="mailto:${personal.email}" class="link-minimal group flex items-center justify-center lg:justify-start gap-2 transition-colors hover:text-emerald-600">
-                        <div class="w-7 h-7 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
-                            <svg class="w-3 h-3 opacity-70 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        </div>
-                        <span class="pb-0.5">${personal.email}</span>
-                    </a>
-                    <a href="tel:${personal.phone.replace(/[()\s-]/g, '')}" class="link-minimal group flex items-center justify-center lg:justify-start gap-2 transition-colors hover:text-emerald-600">
-                        <div class="w-7 h-7 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
-                            <svg class="w-3 h-3 opacity-70 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                        </div>
-                        <span class="pb-0.5">${personal.phone}</span>
-                    </a>
-                </div>
-
-                <nav class="flex flex-wrap gap-1.5 justify-center lg:justify-start pt-1.5 lg:pt-2" aria-label="${onBlogPage ? 'Site navigation' : 'Social links'}">
-                    ${onBlogPage ? `
-                    <a href="index.html" class="pill pill-icon w-9 h-9 justify-center border-emerald-200 bg-emerald-50/50 text-emerald-800 hover:border-emerald-300 hover:bg-emerald-50" title="Home" aria-label="Home">
-                        <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                    </a>
-                    ` : `
-                    <a href="blog.html" class="pill pill-icon w-9 h-9 justify-center border-zinc-200 bg-zinc-50 text-zinc-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 transition-all" title="Blog" aria-label="Blog">
-                        <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                    </a>
-                    `}
-                    ${personal.social.github ? `
-                        <a href="${personal.social.github}" target="_blank" rel="noopener noreferrer" class="pill pill-icon w-9 h-9 justify-center" title="GitHub" aria-label="GitHub profile">
-                            <svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        </a>
-                    ` : ''}
-                    ${personal.social.googleScholar ? `
-                        <a href="${personal.social.googleScholar}" target="_blank" rel="noopener noreferrer" class="pill pill-icon w-9 h-9 justify-center" title="Google Scholar" aria-label="Google Scholar profile">
-                            <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
-                        </a>
-                    ` : ''}
-                    ${personal.social.huggingface ? `
-                        <a href="${personal.social.huggingface}" target="_blank" rel="noopener noreferrer" class="pill pill-icon w-9 h-9 justify-center" title="HuggingFace" aria-label="HuggingFace profile">
-                            <span style="font-size:18px;line-height:1">🤗</span>
-                        </a>
-                    ` : ''}
-                </nav>
-
-                ${quickNavHtml}
             </div>
+
+            <div class="flex flex-col gap-1.5 text-[13px] w-full">
+                <a href="mailto:${personal.email}" class="link-minimal group flex items-center gap-2.5 transition-colors hover:text-emerald-600">
+                    <div class="w-7 h-7 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
+                        <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <span class="pb-0.5">${personal.email}</span>
+                </a>
+                <a href="tel:${personal.phone.replace(/[()\s-]/g, '')}" class="link-minimal group flex items-center gap-2.5 transition-colors hover:text-emerald-600">
+                    <div class="w-7 h-7 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
+                        <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    </div>
+                    <span class="pb-0.5">${personal.phone}</span>
+                </a>
+            </div>
+
+            <nav class="flex flex-wrap gap-1" aria-label="Social links">
+                ${socialIcons}
+            </nav>
+
+            ${navHtml(false)}
         </div>
     `;
 }
@@ -362,22 +384,45 @@ function renderFooter() {
 
 /**
  * IntersectionObserver — 元素进入视口时添加 .revealed 触发动画
+ * 并追踪当前可见的 section 以高亮导航链接
  */
 function observeReveal() {
     const els = document.querySelectorAll('.reveal');
-    if (!els.length) return;
-    const obs = new IntersectionObserver(
+    if (els.length) {
+        const obs = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }
+        );
+        els.forEach((el) => obs.observe(el));
+    }
+
+    // 导航活跃 section 追踪
+    const sections = document.querySelectorAll('section[id^="section-"]');
+    const navLinks = document.querySelectorAll('.quick-nav-link');
+    if (!sections.length || !navLinks.length) return;
+
+    const navObs = new IntersectionObserver(
         (entries) => {
+            let activeId = '';
             entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    obs.unobserve(entry.target);
-                }
+                if (entry.isIntersecting) activeId = entry.target.id;
+            });
+            navLinks.forEach((link) => {
+                const href = link.getAttribute('href') || '';
+                const targetId = href.replace(/.*#/, '');
+                link.classList.toggle('active', targetId === activeId);
             });
         },
-        { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }
+        { threshold: 0, rootMargin: '-20% 0px -60% 0px' }
     );
-    els.forEach((el) => obs.observe(el));
+    sections.forEach((s) => navObs.observe(s));
 }
 
 document.addEventListener('DOMContentLoaded', function() {
