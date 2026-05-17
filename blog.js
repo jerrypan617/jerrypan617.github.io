@@ -169,7 +169,7 @@ async function renderBlogList() {
     }
     
     blogPostsContainer.innerHTML = `
-        <div class="space-y-0 divide-y divide-zinc-200">
+        <div class="space-y-0 divide-y divide-zinc-200 reveal">
             ${blogs.map(blog => `
                 <article class="cursor-pointer group py-3.5 sm:py-4 first:pt-0 active:bg-zinc-100 sm:active:bg-transparent -mx-1 px-1 sm:mx-0 sm:px-0 rounded-lg sm:rounded-none" onclick="openBlog('${blog.id}')">
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 mb-1.5">
@@ -191,20 +191,27 @@ async function renderBlogList() {
     `;
 }
 
+// 关闭弹窗（带动画）
+function closeModal(modal) {
+    if (!modal || modal.classList.contains('closing')) return;
+    modal.classList.add('closing');
+    modal.addEventListener('animationend', () => modal.remove(), { once: true });
+}
+
 // 打开博客详情
 async function openBlog(blogId) {
     const blog = blogs.find(b => b.id === blogId);
     if (!blog) return;
-    
+
     // 创建博客详情模态框
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-4 bg-zinc-900/40 sm:bg-zinc-900/35 backdrop-blur-sm';
-    
+    modal.className = 'modal-overlay fixed inset-0 z-50 flex items-stretch sm:items-center justify-center p-0 sm:p-4 bg-zinc-900/40 sm:bg-zinc-900/35 backdrop-blur-sm';
+
     // 直接渲染markdown内容，包括公式
     const renderedContent = renderMathInMarkdown(blog.content);
-    
+
     modal.innerHTML = `
-        <div class="bg-white border-0 sm:border border-zinc-200 max-w-none sm:max-w-3xl w-full h-full sm:h-auto max-h-none sm:max-h-[90vh] min-h-0 overflow-y-auto overscroll-contain relative rounded-none sm:rounded-xl shadow-none sm:shadow-xl sm:shadow-zinc-300/40" onclick="event.stopPropagation()">
+        <div class="modal-content bg-white border-0 sm:border border-zinc-200 max-w-none sm:max-w-3xl w-full h-full sm:h-auto max-h-none sm:max-h-[90vh] min-h-0 overflow-y-auto overscroll-contain relative rounded-none sm:rounded-xl shadow-none sm:shadow-xl sm:shadow-zinc-300/40" onclick="event.stopPropagation()">
             <div class="sticky top-0 z-20 flex gap-3 items-start p-4 sm:p-5 md:p-6 border-b border-zinc-200 bg-white backdrop-blur-sm">
                 <div class="min-w-0 flex-1 space-y-2">
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-2">
@@ -220,7 +227,7 @@ async function openBlog(blogId) {
                         </div>
                     ` : ''}
                 </div>
-                <button type="button" onclick="this.closest('.fixed').remove()"
+                <button type="button" onclick="closeModal(this.closest('.modal-overlay'))"
                         class="shrink-0 -mr-1 text-zinc-500 hover:text-zinc-900 transition-colors text-sm w-11 h-11 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg hover:bg-zinc-100" aria-label="Close">
                     ✕
                 </button>
@@ -230,15 +237,22 @@ async function openBlog(blogId) {
             </div>
         </div>
     `;
-    
+
     document.body.appendChild(modal);
-    
-    // 添加模态框关闭事件（点击外部关闭）
+
+    // 点击外部关闭（带动画）
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.remove();
-        }
+        if (e.target === modal) closeModal(modal);
     });
+
+    // ESC 关闭
+    const onKey = (e) => { if (e.key === 'Escape') closeModal(modal); };
+    document.addEventListener('keydown', onKey);
+    modal.addEventListener('removed', () => document.removeEventListener('keydown', onKey));
+    // 动画结束后清理键盘监听
+    modal.addEventListener('animationend', () => {
+        modal.dispatchEvent(new Event('removed'));
+    }, { once: true });
 }
 
 // 配置marked选项，确保HTML被正确处理
@@ -298,7 +312,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 确保header和footer也被渲染
     renderHeader();
     renderFooter();
+    // 滚动揭示动画
+    if (typeof observeReveal === 'function') observeReveal();
 });
+
+// Export closeModal globally for inline onclick
+window.closeModal = closeModal;
 
 // 添加CSS样式用于博客内容
 const style = document.createElement('style');

@@ -49,7 +49,7 @@ function renderHeader() {
         `;
 
     sidebar.innerHTML = `
-        <div class="flex flex-col items-center lg:items-stretch text-center lg:text-left gap-3 sm:gap-4 lg:gap-4 fade-in staggered-1 min-w-0 max-w-full overflow-x-hidden">
+        <div class="flex flex-col items-center lg:items-stretch text-center lg:text-left gap-3 sm:gap-4 lg:gap-4 min-w-0 max-w-full overflow-x-hidden">
             ${avatarBlock}
             <div class="flex flex-col gap-2.5 sm:gap-3 lg:gap-3 min-w-0 w-full max-w-full overflow-x-hidden pt-0.5">
                 <div class="space-y-1">
@@ -119,7 +119,7 @@ function renderProfile() {
     const { profile: profileData } = siteConfig;
 
     profile.innerHTML = `
-        <div class="space-y-3 sm:space-y-4 fade-in staggered-2">
+        <div class="space-y-3 sm:space-y-4 reveal reveal-delay-1">
             ${profileData.education && profileData.education.length > 0 ? `
                 <div class="grid gap-3 sm:gap-3.5">
                     ${profileData.education.map((edu) => {
@@ -164,7 +164,7 @@ function renderResearchInterests() {
     const domains = skills.domains || [];
 
     el.innerHTML = `
-        <div class="flex flex-wrap gap-1.5 fade-in staggered-3">
+        <div class="flex flex-wrap gap-1.5 reveal reveal-delay-2">
             ${domains.map((domain) => `<span class="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 cursor-default">${domain}</span>`).join('')}
         </div>
     `;
@@ -306,12 +306,12 @@ function renderProjects() {
 
     if (researchContainer) {
         researchContainer.innerHTML = research.length
-            ? `<div class="flex flex-col gap-2 sm:gap-2.5 fade-in staggered-4">${researchRows}</div>`
+            ? `<div class="flex flex-col gap-2 sm:gap-2.5 reveal reveal-delay-1">${researchRows}</div>`
             : '';
     }
     if (projectsContainer) {
         projectsContainer.innerHTML = projectItems.length
-            ? `<div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-5 fade-in staggered-4">${projectCards}</div>`
+            ? `<div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-5 reveal reveal-delay-1">${projectCards}</div>`
             : '';
     }
 }
@@ -324,7 +324,7 @@ function renderAchievements() {
     const { achievements } = siteConfig;
 
     achievementsContainer.innerHTML = `
-        <div class="grid gap-2 sm:gap-2.5 fade-in staggered-5">
+        <div class="grid gap-2 sm:gap-2.5 reveal reveal-delay-1">
             ${achievements.map(achievement => `
                 <div class="flex flex-row items-start justify-between gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-md sm:rounded-lg bg-zinc-50 border border-zinc-200 max-sm:active:bg-zinc-100 sm:hover:border-emerald-300/50 sm:hover:bg-zinc-100/80 transition-all min-w-0">
                     <div class="flex flex-col gap-0 min-w-0 flex-1 pr-1">
@@ -360,6 +360,26 @@ function renderFooter() {
     `;
 }
 
+/**
+ * IntersectionObserver — 元素进入视口时添加 .revealed 触发动画
+ */
+function observeReveal() {
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    const obs = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    obs.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }
+    );
+    els.forEach((el) => obs.observe(el));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     renderHeader();
 
@@ -373,4 +393,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderProjects();
     }
     renderFooter();
+
+    // 滚动揭示动画
+    observeReveal();
 });
