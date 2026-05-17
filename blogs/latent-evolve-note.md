@@ -25,6 +25,8 @@ LatentEvolve: Self-Evolving Test Time Scaling in Latent Space (ICLR 2026)
 
 已有的TTS方法存在的缺陷是：无法把对做上一道题的经验用于下一道题的求解上，无法自我进化。
 
+![LatentEvolve框架](images/latent-evolve.png)
+
 # 2. 方法
 
 ## 2.1 在线推理Phase (海马体)
@@ -53,7 +55,7 @@ $$
 z_{0,i}=z_{base}+\Sigma\alpha_{j}\Delta z_j,\alpha_j=e^{\text{S}(e_{c_i},e_{c_j})},\Delta z_j=z^*_j-z_{base,j}
 $$
 
-如以上公式所示，根据问题的相似度使用隐推理序列的改进方向对 $z_{base,i}$进行加权优化，获得初始推理隐状态序列$z_{0,i}$。使用该隐状态输入LLM让其继续推理，为了保证评估的稳定性和真实性，多次采样获得 $N$ 条推理路径 $\textbf{y}=\{y_0,y_1,y_2,\cdots,y_N\}$。然后，采用模型自打分的方法，对每条推理路径进行打分，获得平均分数 $Q(\textbf{y})$。目标函数为：
+如以上公式所示，根据问题的相似度使用隐推理序列的改进方向对 $z_{base,i}$进行加权优化，获得初始推理隐状态序列$z_{0,i}$。使用该隐状态输入LLM让其继续推理，为了保证评估的稳定性和真实性，多次采样获得 $N$ 条推理路径 $\textbf{y}=\{y_0,y_1,y_2,\cdots,y_N\}$。然后，采用模型自打分的方法（这种方法会引入噪声），对每条推理路径进行打分，获得平均分数 $Q(\textbf{y})$。目标函数为：
 
 $$
 J(z_{k,i})=E_{y\sim p(y|c_i,z_{k_i})}[Q(\textbf{y})].

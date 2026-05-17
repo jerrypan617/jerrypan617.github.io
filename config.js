@@ -132,7 +132,7 @@ const siteConfig = {
 
     /** Markdown 文件名列表（相对 /blogs/）。GitHub Pages 无目录索引时以此为准；本地也可继续用目录扫描作补充。 */
     blogFiles: [
-        "attention-sink-analysis.md"
+        "latent-evolve-note.md"
     ]
 };
 
