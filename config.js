@@ -18,7 +18,6 @@ const siteConfig = {
         name: "Xu_Pan",
         email: "pan2004xu@gmail.com",
         phone: "(+86) 13732230785",
-        bootMessage: "Computer science · Xi'an Jiaotong University",
         photo: "resources/my_face.jpg",
         social: {
             github: "https://github.com/jerrypan617",
