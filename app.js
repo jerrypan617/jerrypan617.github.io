@@ -5,9 +5,6 @@ function renderHeader() {
 
     const { personal } = siteConfig;
     const displayName = personal.name.replace(/_/g, ' ');
-    const path =
-        typeof window !== 'undefined' && window.location.pathname ? window.location.pathname : '';
-    const onBlogPage = /blog\.html$/i.test(path);
 
     const avatarCompact =
         'relative block shrink-0 overflow-hidden rounded-lg border border-zinc-200/60 bg-zinc-100 w-9 h-9 sm:w-10 sm:h-10';
@@ -26,16 +23,11 @@ function renderHeader() {
         { id: 'section-projects', label: 'Projects' },
     ];
 
-    const navLinks = onBlogPage
-        ? [
-              { href: '#section-blog', label: 'Blog' },
-              ...sectionAnchors.map((s) => ({ href: `index.html#${s.id}`, label: s.label })),
-          ]
-        : sectionAnchors.map((s) => ({
-              href: 'javascript:void(0)',
-              label: s.label,
-              sectionId: s.id,
-          }));
+    const navLinks = sectionAnchors.map((s) => ({
+        href: 'javascript:void(0)',
+        label: s.label,
+        sectionId: s.id,
+    }));
 
     const navHtml = (horizontal) => `
         <nav class="${horizontal ? 'flex lg:hidden' : 'hidden lg:flex'} w-full min-w-0" aria-label="Quick navigation">
@@ -57,15 +49,6 @@ function renderHeader() {
     `;
 
     const socialIcons = `
-        ${onBlogPage ? `
-        <a href="index.html" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="Home" aria-label="Home">
-            <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        </a>
-        ` : `
-        <a href="javascript:void(0)" onclick="switchToBlog()" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="Blog" aria-label="Blog">
-            <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-        </a>
-        `}
         ${personal.social.github ? `
             <a href="${personal.social.github}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-500 hover:text-emerald-700 hover:bg-emerald-50/60 transition-all" title="GitHub" aria-label="GitHub profile">
                 <svg class="w-[17px] h-[17px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -96,47 +79,72 @@ function renderHeader() {
                 </div>
                 <div class="flex items-center gap-0.5 shrink-0 -mr-1.5">
                     ${socialIcons}
+                    <button onclick="toggleSidebar()" class="sidebar-toggle sidebar-toggle-mobile flex items-center justify-center w-7 h-7 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors" aria-label="Toggle sidebar">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
                 </div>
             </div>
-            ${navHtml(true)}
+            <div class="sidebar-body">
+                ${navHtml(true)}
+            </div>
         </div>
 
         <!-- ===== Desktop layout (lg+) ===== -->
-        <div class="hidden lg:flex flex-col items-stretch text-left gap-4 min-w-0 max-w-full">
-            <div class="flex flex-col items-start gap-3">
-                <span class="${avatarFull}">${avatarImg}</span>
-                <div class="space-y-1.5 w-full">
-                    <h1 class="text-[1.35rem] font-bold text-zinc-900 tracking-[-0.03em] leading-tight">
-                        <a href="index.html" class="hover:text-zinc-600 transition-colors">${displayName}</a>
-                    </h1>
-                    ${personal.bootMessage ? `
-                    <p class="text-[11px] font-semibold tracking-[0.1em] uppercase text-zinc-400 leading-snug">${personal.bootMessage}</p>
-                    ` : ''}
+        <div class="hidden lg:flex flex-col items-stretch text-left gap-4 min-w-0 max-w-full sidebar-desktop-container">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex flex-col items-start gap-3 min-w-0 flex-1">
+                    <span class="${avatarFull} sidebar-desktop-avatar">${avatarImg}</span>
+                    <div class="sidebar-body space-y-1.5 w-full sidebar-desktop-name">
+                        <h1 class="text-[1.35rem] font-bold text-zinc-900 tracking-[-0.03em] leading-tight">
+                            <a href="index.html" class="hover:text-zinc-600 transition-colors">${displayName}</a>
+                        </h1>
+                        ${personal.bootMessage ? `
+                        <p class="text-[11px] font-semibold tracking-[0.1em] uppercase text-zinc-400 leading-snug">${personal.bootMessage}</p>
+                        ` : ''}
+                    </div>
                 </div>
+                <button onclick="toggleSidebar()" class="sidebar-toggle sidebar-toggle-desktop flex items-center justify-center w-8 h-8 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors shrink-0 mt-0.5" aria-label="Toggle sidebar">
+                    <svg class="w-4 h-4 sidebar-toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
             </div>
 
-            <div class="flex flex-col gap-1.5 text-[13px] w-full">
-                <a href="mailto:${personal.email}" class="link-minimal group flex items-center gap-2.5 transition-colors hover:text-emerald-600">
-                    <div class="w-7 h-7 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
-                        <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    </div>
-                    <span class="pb-0.5">${personal.email}</span>
-                </a>
-                <a href="tel:${personal.phone.replace(/[()\s-]/g, '')}" class="link-minimal group flex items-center gap-2.5 transition-colors hover:text-emerald-600">
-                    <div class="w-7 h-7 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
-                        <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    </div>
-                    <span class="pb-0.5">${personal.phone}</span>
-                </a>
+            <div class="sidebar-body flex flex-col gap-4">
+                <div class="flex flex-col gap-1.5 text-[13px] w-full">
+                    <a href="mailto:${personal.email}" class="link-minimal group flex items-center gap-2.5 transition-colors hover:text-emerald-600">
+                        <div class="w-7 h-7 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
+                            <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <span class="pb-0.5">${personal.email}</span>
+                    </a>
+                    <a href="tel:${personal.phone.replace(/[()\s-]/g, '')}" class="link-minimal group flex items-center gap-2.5 transition-colors hover:text-emerald-600">
+                        <div class="w-7 h-7 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-50 group-hover:border-emerald-100 transition-colors">
+                            <svg class="w-3.5 h-3.5 text-zinc-500 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                        </div>
+                        <span class="pb-0.5">${personal.phone}</span>
+                    </a>
+                </div>
+
+                <nav class="flex flex-wrap gap-1" aria-label="Social links">
+                    ${socialIcons}
+                </nav>
+
+                ${navHtml(false)}
             </div>
-
-            <nav class="flex flex-wrap gap-1" aria-label="Social links">
-                ${socialIcons}
-            </nav>
-
-            ${navHtml(false)}
         </div>
     `;
+
+    // Restore collapsed state on load
+    if (localStorage.getItem('sidebarCollapsed') === 'true') {
+        sidebar.classList.add('collapsed');
+    }
+}
+
+// Toggle sidebar collapse/expand
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    const isCollapsed = sidebar.classList.toggle('collapsed');
+    localStorage.setItem('sidebarCollapsed', isCollapsed);
 }
 
 // 渲染 Profile 部分
@@ -430,43 +438,13 @@ function observeReveal() {
     sections.forEach((s) => navObs.observe(s));
 }
 
-/* ── View switching (index.html 内切换 main / blog，侧边栏不重绘) ── */
-
-window.currentView = 'main'; // 'main' | 'blog'
-let blogInitialized = false;
-
-function switchToBlog() {
-    if (window.currentView === 'blog') return;
-    window.currentView = 'blog';
-    document.getElementById('main-content')?.classList.add('hidden');
-    document.getElementById('blog-content')?.classList.remove('hidden');
-    history.replaceState({ view: 'blog' }, '', window.location.pathname.replace(/\/$/, '') + '?view=blog');
-    window.scrollTo({ top: 0 });
-    if (!blogInitialized && typeof renderBlogList === 'function') {
-        blogInitialized = true;
-        renderBlogList().then(() => {
-            if (typeof observeReveal === 'function') observeReveal();
-        });
-    } else if (typeof observeReveal === 'function') {
-        observeReveal();
-    }
-}
-
 function scrollToSection(id) {
-    if (window.currentView === 'blog') {
-        window.currentView = 'main';
-        document.getElementById('main-content')?.classList.remove('hidden');
-        document.getElementById('blog-content')?.classList.add('hidden');
-        history.replaceState({ view: 'main' }, '', window.location.pathname);
-    }
     requestAnimationFrame(() => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const isBlogPage = /blog\.html$/i.test(window.location.pathname);
-
     renderHeader();
 
     if (document.getElementById('profile')) {
@@ -479,16 +457,5 @@ document.addEventListener('DOMContentLoaded', function() {
         renderProjects();
     }
     renderFooter();
-
-    // 仅 index.html 支持 view 切换
-    if (!isBlogPage) {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('view') === 'blog') {
-            switchToBlog();
-        } else {
-            observeReveal();
-        }
-    } else {
-        observeReveal();
-    }
+    observeReveal();
 });

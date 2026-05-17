@@ -94,36 +94,6 @@ body > .page-shell {
 .reveal-delay-1 { transition-delay: 0.06s; }
 .reveal-delay-2 { transition-delay: 0.12s; }
 
-/* ── Modal animations ── */
-@keyframes overlayIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-@keyframes modalIn {
-    from { opacity: 0; transform: scale(0.97) translateY(12px); }
-    to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-@keyframes overlayOut {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-}
-@keyframes modalOut {
-    from { opacity: 1; transform: scale(1) translateY(0); }
-    to   { opacity: 0; transform: scale(0.97) translateY(8px); }
-}
-.modal-overlay {
-    animation: overlayIn 0.2s ease-out;
-}
-.modal-overlay.closing {
-    animation: overlayOut 0.15s ease-in forwards;
-}
-.modal-overlay.closing .modal-content {
-    animation: modalOut 0.15s ease-in forwards;
-}
-.modal-content {
-    animation: modalIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 .card {
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -257,5 +227,78 @@ a.pill {
     }
     .card:active {
         background: #f4f4f5;
+    }
+}
+
+/* ── Sidebar collapsible ── */
+.sidebar-body {
+    overflow: hidden;
+    max-height: 2000px;
+    opacity: 1;
+    transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.3s ease,
+                padding 0.3s ease,
+                margin 0.3s ease;
+}
+
+#sidebar.collapsed .sidebar-body {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.sidebar-toggle-icon {
+    transition: transform 0.35s ease;
+}
+
+/* Desktop collapse — sidebar narrows to icon strip */
+@media (min-width: 1024px) {
+    #sidebar {
+        transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                    min-width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                    max-width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #sidebar.collapsed {
+        width: 3.5rem !important;
+        min-width: 3.5rem !important;
+        max-width: 3.5rem !important;
+    }
+
+    #sidebar.collapsed .sidebar-desktop-container {
+        align-items: center;
+    }
+
+    #sidebar.collapsed .sidebar-desktop-avatar {
+        width: 2.25rem !important;
+        height: auto;
+        aspect-ratio: 1 !important;
+        border-radius: 0.5rem !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
+
+    #sidebar.collapsed .sidebar-desktop-avatar img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+        object-position: top;
+    }
+
+    #sidebar.collapsed .sidebar-desktop-name {
+        display: none;
+    }
+
+    #sidebar.collapsed .sidebar-toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    #sidebar.collapsed .sidebar-toggle-desktop {
+        margin-top: 0;
     }
 }

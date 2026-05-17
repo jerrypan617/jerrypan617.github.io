@@ -1,6 +1,6 @@
 const siteConfig = {
     /**
-     * 站点根 URL（无末尾斜杠），与 feed.xml、各页 canonical/OG 保持一致。
+     * 站点根 URL（无末尾斜杠），与各页 canonical/OG 保持一致。
      * 若使用自定义域名或 Project Pages，请同时改 HTML/feed 中的绝对链接。
      */
     site: {
@@ -130,9 +130,5 @@ const siteConfig = {
         designPattern: ""
     },
 
-    /** Markdown 文件名列表（相对 /blogs/）。GitHub Pages 无目录索引时以此为准；本地也可继续用目录扫描作补充。 */
-    blogFiles: [
-        "latent-evolve-note.md"
-    ]
 };
 
