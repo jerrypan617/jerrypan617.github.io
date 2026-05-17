@@ -195,6 +195,10 @@ async function renderBlogList() {
 function closeModal(modal) {
     if (!modal || modal.classList.contains('closing')) return;
     modal.classList.add('closing');
+    // 清理 ESC 键盘监听
+    if (modal._escHandler) {
+        document.removeEventListener('keydown', modal._escHandler);
+    }
     modal.addEventListener('animationend', () => modal.remove(), { once: true });
 }
 
@@ -245,14 +249,9 @@ async function openBlog(blogId) {
         if (e.target === modal) closeModal(modal);
     });
 
-    // ESC 关闭
-    const onKey = (e) => { if (e.key === 'Escape') closeModal(modal); };
-    document.addEventListener('keydown', onKey);
-    modal.addEventListener('removed', () => document.removeEventListener('keydown', onKey));
-    // 动画结束后清理键盘监听
-    modal.addEventListener('animationend', () => {
-        modal.dispatchEvent(new Event('removed'));
-    }, { once: true });
+    // ESC 关闭（handler 挂载在 modal 上便于 closeModal 清理）
+    modal._escHandler = (e) => { if (e.key === 'Escape') closeModal(modal); };
+    document.addEventListener('keydown', modal._escHandler);
 }
 
 // 配置marked选项，确保HTML被正确处理
@@ -308,12 +307,12 @@ function renderMathInMarkdown(content) {
 
 // 初始化：页面加载完成后渲染博客列表
 document.addEventListener('DOMContentLoaded', function() {
-    renderBlogList();
+    renderBlogList().then(() => {
+        if (typeof observeReveal === 'function') observeReveal();
+    });
     // 确保header和footer也被渲染
     renderHeader();
     renderFooter();
-    // 滚动揭示动画
-    if (typeof observeReveal === 'function') observeReveal();
 });
 
 // Export closeModal globally for inline onclick
