@@ -1,4 +1,5 @@
 // Tailwind CSS Configuration — light UI
+if (window.tailwind) {
 tailwind.config = {
     darkMode: 'class',
     theme: {
@@ -19,4 +20,5 @@ tailwind.config = {
             },
         }
     }
+}
 }

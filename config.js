@@ -16,8 +16,8 @@ const siteConfig = {
 
     personal: {
         name: "Xu_Pan",
-        email: "pan2004xu@gmail.com",
-        phone: "(+86) 13732230785",
+        email: "pan_xu@stu.xjtu.edu.cn",
+        phone: "(+86) 137-3223-0785",
         photo: "resources/my_face.jpg",
         social: {
             github: "https://github.com/jerrypan617",
@@ -51,11 +51,9 @@ const siteConfig = {
     /** 研究兴趣标签（页面展示为 Research interests） */
     skills: {
         domains: [
-            "Latent Reasoning",
-            "LLM Memory",
-            "RLHF",
-            "XAI",
-            "Image Reconstruction"
+            "Visual Latent Reasoning",
+            "Agent Memory",
+            "World Model Agents"
         ]
     },
 
