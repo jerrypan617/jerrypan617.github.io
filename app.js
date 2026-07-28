@@ -237,7 +237,7 @@ function renderIntro() {
     intro.innerHTML = `
         <div class="hero-panel reveal">
             <p class="hero-subtitle">
-                I am a first-year Ph.D. student at the Faculty of Electronic and Information Engineering, Xi’an Jiaotong University, under the supervision of <a href="https://gr.xjtu.edu.cn/zhanglling/" target="_blank" rel="noopener noreferrer">Assoc. Prof. Lingling Zhang</a> and <a href="https://liujun-xjtu.github.io/zh/" target="_blank" rel="noopener noreferrer">Prof. Jun Liu</a>. I also work closely with <a href="https://www.stevens.edu/profile/yyao" target="_blank" rel="noopener noreferrer">Prof. Yudong Yao</a> at Stevens Institute of Technology. My research interests lie in vision-language models, world models, and agents.
+                I am a Ph.D. student at the Faculty of Electronic and Information Engineering, Xi’an Jiaotong University, under the supervision of <a href="https://gr.xjtu.edu.cn/zhanglling/" target="_blank" rel="noopener noreferrer">Assoc. Prof. Lingling Zhang</a> and <a href="https://liujun-xjtu.github.io/zh/" target="_blank" rel="noopener noreferrer">Prof. Jun Liu</a>. I also work closely with <a href="https://www.stevens.edu/profile/yyao" target="_blank" rel="noopener noreferrer">Prof. Yudong Yao</a> at Stevens Institute of Technology. My research interests lie in vision-language models, world models, and agents.
             </p>
         </div>
     `;

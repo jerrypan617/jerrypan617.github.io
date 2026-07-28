@@ -260,6 +260,8 @@ button:focus-visible {
     line-height: 1.48;
     max-width: 52rem;
     overflow-wrap: anywhere;
+    text-align: justify;
+    text-align-last: left;
 }
 
 .hero-subtitle a {
