@@ -366,11 +366,11 @@ function renderFooter() {
                 ${footerData.designPattern ? `<p class="text-[10px] text-zinc-600">${footerData.designPattern}</p>` : ''}
                 <p class="site-traffic text-[10px] text-zinc-600" aria-label="Site traffic statistics" aria-live="polite">
                     <span id="busuanzi_container_site_pv" class="busuanzi-counter">
-                        本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+                        Total visits <span id="busuanzi_value_site_pv"></span>
                     </span>
                     <span id="busuanzi_container_site_uv" class="busuanzi-counter">
                         <span class="site-traffic-separator" aria-hidden="true">·</span>
-                        本站访客数 <span id="busuanzi_value_site_uv"></span> 人次
+                        Unique visitors <span id="busuanzi_value_site_uv"></span>
                     </span>
                 </p>
             </div>
