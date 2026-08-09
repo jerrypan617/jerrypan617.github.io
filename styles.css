@@ -503,6 +503,19 @@ a.pill {
     font-weight: 600;
 }
 
+.busuanzi-counter {
+    display: none;
+}
+
+.site-traffic {
+    line-height: 1.5;
+    margin: 0;
+}
+
+.site-traffic-separator {
+    margin: 0 0.35rem;
+}
+
 .scrollbar-none {
     -ms-overflow-style: none;
     contain: paint;

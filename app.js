@@ -364,9 +364,26 @@ function renderFooter() {
             <div class="flex flex-col items-center gap-0.5">
                 <p class="text-[11px] font-medium tracking-[0.12em] uppercase text-zinc-500">${footerData.systemId}</p>
                 ${footerData.designPattern ? `<p class="text-[10px] text-zinc-600">${footerData.designPattern}</p>` : ''}
+                <p class="site-traffic text-[10px] text-zinc-600" aria-label="Site traffic statistics" aria-live="polite">
+                    <span id="busuanzi_container_site_pv" class="busuanzi-counter">
+                        本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+                    </span>
+                    <span id="busuanzi_container_site_uv" class="busuanzi-counter">
+                        <span class="site-traffic-separator" aria-hidden="true">·</span>
+                        本站访客数 <span id="busuanzi_value_site_uv"></span> 人次
+                    </span>
+                </p>
             </div>
         </div>
     `;
+
+    if (!document.getElementById('busuanzi-script')) {
+        const counterScript = document.createElement('script');
+        counterScript.id = 'busuanzi-script';
+        counterScript.async = true;
+        counterScript.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+        document.head.appendChild(counterScript);
+    }
 }
 
 /**
