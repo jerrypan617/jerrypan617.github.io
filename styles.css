@@ -819,20 +819,88 @@ a.pill {
 }
 
 @media (max-width: 1023px) {
+    body > .page-shell {
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
     #sidebar {
         border-radius: 0;
         padding: 0.25rem 0;
+        position: relative;
+        top: auto;
         width: 100%;
     }
 
     .content-rail {
+        flex: 1 1 auto;
         max-width: 100%;
         width: 100%;
     }
 
+    .mobile-profile-layout {
+        align-items: start;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: 9.5rem minmax(0, 1fr);
+        max-width: 32rem;
+    }
+
+    .mobile-profile-avatar {
+        width: 9.5rem;
+    }
+
+    .mobile-profile-copy {
+        min-width: 0;
+        padding-right: 2.25rem;
+    }
+
+    .mobile-profile-name,
+    .mobile-profile-role {
+        margin: 0;
+    }
+
+    .mobile-profile-name {
+        color: var(--text-primary);
+        font-size: 1.18rem;
+        font-weight: 680;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+    }
+
+    .mobile-profile-name a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .mobile-profile-role {
+        color: var(--text-tertiary);
+        font-size: 0.68rem;
+        font-weight: 650;
+        letter-spacing: 0.045em;
+        line-height: 1.35;
+        margin-top: 0.28rem;
+        text-transform: uppercase;
+    }
+
+    .mobile-link-list {
+        display: grid;
+        font-size: 0.76rem;
+        gap: 0.16rem;
+        margin-top: 0.85rem;
+    }
+
+    .mobile-link-list .link-minimal {
+        align-items: center;
+        min-height: 1.35rem;
+        width: max-content;
+        max-width: 100%;
+    }
+
     .theme-dock {
-        right: max(0.75rem, env(safe-area-inset-right, 0px));
-        top: max(0.75rem, env(safe-area-inset-top, 0px));
+        position: absolute;
+        right: max(1.75rem, env(safe-area-inset-right, 0px));
+        top: max(1.25rem, env(safe-area-inset-top, 0px));
     }
 
     .content-stack {
@@ -844,9 +912,118 @@ a.pill {
     }
 
     .theme-dock .theme-toggle {
-        min-height: 2.25rem;
+        background: transparent;
+        border-color: transparent;
+        min-height: 1.75rem;
         padding: 0;
-        width: 2.25rem;
+        width: 1.75rem;
+    }
+}
+
+@media (max-width: 639px) {
+    body > .page-shell {
+        gap: 0.8rem;
+        padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+        padding-top: max(1rem, env(safe-area-inset-top, 0px));
+    }
+
+    #sidebar {
+        padding: 0.1rem 0 0.45rem;
+    }
+
+    .mobile-profile-layout {
+        gap: 0.9rem;
+    }
+
+    .theme-dock {
+        right: max(1.25rem, env(safe-area-inset-right, 0px));
+        top: max(1.15rem, env(safe-area-inset-top, 0px));
+    }
+
+    .content-rail {
+        padding-top: 0 !important;
+    }
+
+    .content-stack {
+        gap: 0.25rem;
+    }
+
+    .content-section,
+    .hero-panel {
+        padding-bottom: 0.9rem;
+        padding-top: 0.72rem;
+    }
+
+    .section-title {
+        font-size: 1.08rem;
+        margin-bottom: 0.55rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.94rem;
+        line-height: 1.58;
+        text-align: left;
+        text-align-last: auto;
+    }
+
+    .publication-list {
+        counter-reset: publication;
+        gap: 1rem;
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .publication-item {
+        counter-increment: publication;
+        display: grid;
+        grid-template-columns: 1.65rem minmax(0, 1fr);
+        padding-left: 0;
+    }
+
+    .publication-item::before {
+        color: var(--text-tertiary);
+        content: counter(publication, decimal-leading-zero);
+        font-size: 0.65rem;
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        line-height: 1;
+        padding-top: 0.38rem;
+    }
+
+    .publication-title,
+    .publication-authors,
+    .publication-note {
+        grid-column: 2;
+    }
+
+    .publication-title {
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+
+    .publication-authors,
+    .publication-note {
+        font-size: 0.84rem;
+        line-height: 1.48;
+        margin-top: 0.3rem;
+    }
+
+    .publication-links {
+        display: flex;
+        gap: 0.7rem;
+        margin: 0.38rem 0 0;
+        width: max-content;
+    }
+
+    .publication-links a {
+        font-size: 0.74rem;
+        letter-spacing: 0.02em;
+    }
+
+    #footer {
+        margin-top: auto;
+        padding-top: 1.5rem;
     }
 }
 
