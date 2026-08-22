@@ -70,7 +70,7 @@ const siteConfig = {
                 { name: "Q. Lu" },
             ],
             github: "https://github.com/jerrypan617/DerainUNet-MindSpore",
-            paper: "",
+            paper: "https://link.springer.com/article/10.1007/s00521-026-12412-5",
         },
         {
             type: "RESEARCH",
@@ -129,4 +129,3 @@ const siteConfig = {
     },
 
 };
-
